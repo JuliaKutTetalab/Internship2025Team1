@@ -5,6 +5,8 @@ import kotlinx.serialization.Serializable
 
 sealed interface Route: NavKey {
     @Serializable
+    data object Splash: Route, NavKey
+    @Serializable
     data object Login: Route, NavKey
 
     @Serializable
