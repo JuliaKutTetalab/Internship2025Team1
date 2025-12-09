@@ -36,7 +36,7 @@ fun NavigationRoot(modifier: Modifier = Modifier) {
                         LoginScreen()
                     }
                 }
-                is Route.SignIn ->{
+                is Route.SignUp ->{
                     NavEntry(key){
 
                     }

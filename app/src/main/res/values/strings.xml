@@ -2,4 +2,9 @@
     <string name="app_name">GrowBox</string>
     <string name="splash_screen_greeting">Welcome to App</string>
     <string name="splash_image_content_description">splash image</string>
+    <string name="login_greeting">Welcome Back</string>
+    <string name="login_subtitle">Sign in to grow your plants</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+
 </resources>
