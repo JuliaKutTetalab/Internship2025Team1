@@ -16,10 +16,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
-import coil.size.Dimension
 import com.arathort.growbox.presentation.common.Dimensions
 import kotlinx.coroutines.delay
 
@@ -44,7 +42,7 @@ fun SplashScreen(
             modifier = Modifier.size(Dimensions.iconSize)
         )
 
-        Spacer(modifier = Modifier.height(Dimensions.medium))
+        Spacer(modifier = Modifier.height(Dimensions.large))
 
         Text(
             modifier = Modifier,
