@@ -9,5 +9,6 @@
     <string name="sign_in">Sign in</string>
     <string name="login_no_account">Don`t have an account? </string>
     <string name="sign_up">Sign up</string>
-
+    <string name="error_invalid_email">Please enter a valid email address.</string>
+    <string name="error_password_requirements">Password must be 8+ chars, with letters, numbers, and symbols.</string>
 </resources>
