@@ -8,6 +8,7 @@ import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
 import androidx.navigation3.ui.NavDisplay
 import com.arathort.growbox.presentation.auth.login.LoginScreen
+import com.arathort.growbox.presentation.auth.signup.SignUpScreen
 import com.arathort.growbox.presentation.splash.screen.SplashScreen
 
 @Composable
@@ -33,12 +34,17 @@ fun NavigationRoot(modifier: Modifier = Modifier) {
                 }
                 is Route.Login ->{
                     NavEntry(key){
-                        LoginScreen()
+                        LoginScreen(
+                            onSignUpClick = {
+                                backStack.add(Route.SignUp)
+                                backStack.remove(Route.Login)
+                            }
+                        )
                     }
                 }
                 is Route.SignUp ->{
                     NavEntry(key){
-
+                        SignUpScreen()
                     }
                 }
                 is Route.Onboarding ->{

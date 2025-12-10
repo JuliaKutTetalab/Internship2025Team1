@@ -33,14 +33,15 @@ import com.arathort.growbox.ui.theme.Typography
 
 @Composable
 fun LoginScreen(
-    loginScreenViewModel: LoginScreenViewModel = hiltViewModel()
+    loginScreenViewModel: LoginScreenViewModel = hiltViewModel(),
+    onSignUpClick: ()-> Unit
 ) {
     val uiState = loginScreenViewModel.uiState.collectAsStateWithLifecycle().value
-    LoginPage(uiState = uiState, onEvent = loginScreenViewModel::onEvent)
+    LoginPage(uiState = uiState, onEvent = loginScreenViewModel::onEvent, onSignUpClick = onSignUpClick)
 }
 
 @Composable
-private fun LoginPage(uiState: LoginUiState, onEvent: (LoginUiEvent) -> Unit) {
+private fun LoginPage(uiState: LoginUiState, onEvent: (LoginUiEvent) -> Unit,onSignUpClick: ()-> Unit ) {
     Column(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -159,7 +160,8 @@ private fun LoginPagePreview() {
     GrowBoxTheme {
         LoginPage(
             uiState = LoginUiState(),
-            onEvent = {}
+            onEvent = {},
+            onSignUpClick = {}
         )
     }
 }
