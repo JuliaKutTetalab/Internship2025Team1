@@ -1,6 +1,7 @@
 package com.arathort.growbox.presentation.auth.login
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -12,6 +13,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -21,11 +23,14 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation3.runtime.NavBackStack
+import androidx.navigation3.runtime.NavKey
 import com.arathort.growbox.R
 import com.arathort.growbox.presentation.common.Dimensions
 import com.arathort.growbox.presentation.common.button.GradientButton
 import com.arathort.growbox.presentation.common.textfield.LoginEmailField
 import com.arathort.growbox.presentation.common.textfield.LoginPasswordField
+import com.arathort.growbox.presentation.navigation.Route
 import com.arathort.growbox.ui.theme.Green800
 import com.arathort.growbox.ui.theme.GrowBoxTheme
 import com.arathort.growbox.ui.theme.Red
@@ -34,14 +39,31 @@ import com.arathort.growbox.ui.theme.Typography
 @Composable
 fun LoginScreen(
     loginScreenViewModel: LoginScreenViewModel = hiltViewModel(),
-    onSignUpClick: ()-> Unit
+    backStack: NavBackStack<NavKey>
 ) {
     val uiState = loginScreenViewModel.uiState.collectAsStateWithLifecycle().value
-    LoginPage(uiState = uiState, onEvent = loginScreenViewModel::onEvent, onSignUpClick = onSignUpClick)
+    LaunchedEffect(uiState.isSuccess) {
+        if (uiState.isSuccess) {
+            backStack.add(Route.Home)
+            backStack.remove(Route.Login)
+        }
+    }
+    LoginPage(
+        uiState = uiState,
+        onEvent = loginScreenViewModel::onEvent,
+        onSignUpClick = {
+            backStack.add(Route.SignUp)
+            backStack.remove(Route.Login)
+        }
+    )
 }
 
 @Composable
-private fun LoginPage(uiState: LoginUiState, onEvent: (LoginUiEvent) -> Unit,onSignUpClick: ()-> Unit ) {
+private fun LoginPage(
+    uiState: LoginUiState,
+    onEvent: (LoginUiEvent) -> Unit,
+    onSignUpClick: () -> Unit
+) {
     Column(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -104,7 +126,6 @@ private fun LoginPage(uiState: LoginUiState, onEvent: (LoginUiEvent) -> Unit,onS
 
             LoginPasswordField(
                 password = uiState.password,
-                isValid = uiState.isPasswordValid,
                 isVisible = uiState.isPasswordVisible,
                 errorId = uiState.passwordError,
                 onValueChange = { onEvent(LoginUiEvent.OnPasswordChanged(it)) },
@@ -144,7 +165,8 @@ private fun LoginPage(uiState: LoginUiState, onEvent: (LoginUiEvent) -> Unit,onS
             Text(
                 text = stringResource(R.string.sign_up),
                 style = Typography.bodyMedium,
-                color = Green800
+                color = Green800,
+                modifier = Modifier.clickable(onClick = { onSignUpClick() })
             )
 
         }

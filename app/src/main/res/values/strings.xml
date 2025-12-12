@@ -6,9 +6,15 @@
     <string name="login_subtitle">Sign in to grow your plants</string>
     <string name="email">Email</string>
     <string name="password">Password</string>
+    <string name="confirm_password">Confirm Password</string>
     <string name="sign_in">Sign in</string>
+    <string name="create_account">Create an account</string>
+    <string name="sign_up_subtitle">Create an account to start growing plants</string>
     <string name="login_no_account">Don`t have an account? </string>
+    <string name="have_account">Already have an account? </string>
+    <string name="login">Log In </string>
     <string name="sign_up">Sign up</string>
     <string name="error_invalid_email">Please enter a valid email address.</string>
     <string name="error_password_requirements">Password must be 8+ chars, with letters, numbers, and symbols.</string>
+    <string name="error_passwords_different">Passwords are not the same</string>
 </resources>

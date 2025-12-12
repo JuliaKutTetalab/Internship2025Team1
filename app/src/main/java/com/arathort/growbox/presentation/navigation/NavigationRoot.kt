@@ -35,16 +35,15 @@ fun NavigationRoot(modifier: Modifier = Modifier) {
                 is Route.Login ->{
                     NavEntry(key){
                         LoginScreen(
-                            onSignUpClick = {
-                                backStack.add(Route.SignUp)
-                                backStack.remove(Route.Login)
-                            }
+                            backStack = backStack
                         )
                     }
                 }
                 is Route.SignUp ->{
                     NavEntry(key){
-                        SignUpScreen()
+                        SignUpScreen(
+                            backStack = backStack
+                        )
                     }
                 }
                 is Route.Onboarding ->{

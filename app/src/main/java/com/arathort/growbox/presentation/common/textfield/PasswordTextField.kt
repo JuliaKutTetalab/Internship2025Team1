@@ -14,7 +14,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
@@ -31,7 +30,6 @@ import com.arathort.growbox.ui.theme.Typography
 @Composable
 fun LoginPasswordField(
     password: String,
-    isValid: Boolean,
     isVisible: Boolean,
     errorId: Int?,
     onValueChange: (String) -> Unit,
@@ -55,14 +53,6 @@ fun LoginPasswordField(
             ),
             trailingIcon = {
                 Row(verticalAlignment = Alignment.CenterVertically) {
-                    if (isValid) {
-                        Icon(
-                            painter = painterResource(R.drawable.ic_check),
-                            contentDescription = "Valid Password",
-                            tint = Green800,
-                            modifier = Modifier.padding(end = 8.dp)
-                        )
-                    }
                     IconButton(onClick = onToggleVisibility) {
                         Icon(
                             painter = painterResource(

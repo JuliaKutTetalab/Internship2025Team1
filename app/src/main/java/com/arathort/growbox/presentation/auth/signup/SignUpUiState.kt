@@ -12,6 +12,7 @@ data class SignUpUiState(
     val emailError: Int? = null,
     val passwordError: Int? = null,
     val confirmPasswordError: Int? = null,
+    val isSamePasswords: Boolean = true,
     val isEmailValid: Boolean = false,
     val isPasswordValid: Boolean = false,
     val isConfirmPasswordValid: Boolean = false
