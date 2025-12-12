@@ -9,5 +9,14 @@
     <string name="sign_in">Sign in</string>
     <string name="login_no_account">Don`t have an account? </string>
     <string name="sign_up">Sign up</string>
+    <string name="onboarding_image_description">Onboarding image</string>
+    <string name="onboadring_first_page_title">Choose Your Plants</string>
+    <string name="onboadring_second_page_title">Connect and Control</string>
+    <string name="onboadring_third_page_title">Observe and Grow</string>
+    <string name="onboarding_first_page_description">Welcome to GrowBox! Select your\nfavorite plants and begin cultivating\nyour personal garden</string>
+    <string name="onboarding_second_page_description">Connect your GrowBox and control\nwatering, lighting, and temperature\nright from your smartphone.</string>
+    <string name="onboarding_third_page_description">See your plants flourish with helpful\ngraphs. You\'re set to grow and\nsucceed!</string>
+    <string name="onboadring_button_skip">Skip</string>
+    <string name="onboadring_button_next">Next</string>
 
 </resources>

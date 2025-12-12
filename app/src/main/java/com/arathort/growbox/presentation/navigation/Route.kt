@@ -14,6 +14,7 @@ sealed interface Route: NavKey {
 
     @Serializable
     data object Onboarding: Route, NavKey
+    data object DeviceConnection: Route, NavKey
 
     @Serializable
     data object Home: Route, NavKey

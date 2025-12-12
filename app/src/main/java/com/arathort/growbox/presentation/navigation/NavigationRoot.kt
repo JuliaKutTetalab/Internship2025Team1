@@ -8,6 +8,8 @@ import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
 import androidx.navigation3.ui.NavDisplay
 import com.arathort.growbox.presentation.auth.login.LoginScreen
+import com.arathort.growbox.presentation.deviceconnection.DeviceConnectionScreen
+import com.arathort.growbox.presentation.onboarding.OnBoardingScreen
 import com.arathort.growbox.presentation.splash.screen.SplashScreen
 
 @Composable
@@ -43,12 +45,22 @@ fun NavigationRoot(modifier: Modifier = Modifier) {
                 }
                 is Route.Onboarding ->{
                     NavEntry(key){
-
+                        OnBoardingScreen(
+                            onNavigateToConnection = {
+                                backStack.add(Route.DeviceConnection)
+                                backStack.remove(Route.Onboarding)
+                            }
+                        )
                     }
                 }
                 is Route.Home ->{
                     NavEntry(key){
 
+                    }
+                }
+                is Route.DeviceConnection ->{
+                    NavEntry(key){
+                        DeviceConnectionScreen()
                     }
                 }
                 else -> error("Unknown NavKey: $key")
