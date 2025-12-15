@@ -4,7 +4,9 @@ import com.arathort.growbox.R
 
 object InputValidator {
     private val EMAIL_PATTERN = android.util.Patterns.EMAIL_ADDRESS
-    private val PASSWORD_PATTERN = Regex("^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@\$!%*#?&])[A-Za-z\\d@\$!%*#?&]{8,}$")
+    private val PASSWORD_PATTERN = Regex(
+        "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[^A-Za-z\\d])[\\S]{8,}$"
+    )
 
     fun isValidEmail(email: String): Boolean {
         return email.isNotBlank() && EMAIL_PATTERN.matcher(email).matches()
