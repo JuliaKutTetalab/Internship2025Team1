@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
-import androidx.compose.material3.MaterialTheme
 import com.arathort.growbox.R
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -15,7 +14,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.arathort.growbox.presentation.common.Dimensions
@@ -45,9 +44,6 @@ fun SplashScreen(
         Spacer(modifier = Modifier.height(Dimensions.large))
 
         Text(
-            modifier = Modifier,
-            style = MaterialTheme.typography.titleLarge,
-            textAlign = TextAlign.Center,
             fontSize = 32.sp,
             fontWeight = FontWeight.Bold,
             text = stringResource(R.string.splash_screen_greeting)
@@ -55,4 +51,9 @@ fun SplashScreen(
 
         Spacer(modifier = Modifier.weight(2f))
     }
+}
+@Composable
+@Preview
+private fun SplashScreenPreview(){
+    SplashScreen(onNavigateToLogin = {})
 }
