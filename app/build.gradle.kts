@@ -68,6 +68,8 @@ dependencies {
     ksp(libs.hilt.android.compiler)
     implementation(platform(libs.firebase.bom))
 
+    implementation(libs.firebase.auth)
+
     implementation(libs.androidx.navigation3.ui)
     implementation(libs.androidx.navigation3.runtime)
     implementation(libs.androidx.lifecycle.viewmodel.navigation3)

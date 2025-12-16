@@ -1,4 +1,4 @@
-package com.arathort.growbox.presentation.auth.login
+package com.arathort.growbox.presentation.auth.signup
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -37,32 +37,32 @@ import com.arathort.growbox.ui.theme.Red
 import com.arathort.growbox.ui.theme.Typography
 
 @Composable
-fun LoginScreen(
-    loginScreenViewModel: LoginScreenViewModel = hiltViewModel(),
+fun SignUpScreen(
+    signUpViewModel: SignUpViewModel = hiltViewModel(),
     backStack: NavBackStack<NavKey>
 ) {
-    val uiState = loginScreenViewModel.uiState.collectAsStateWithLifecycle().value
+    val uiState = signUpViewModel.uiState.collectAsStateWithLifecycle().value
     LaunchedEffect(uiState.isSuccess) {
         if (uiState.isSuccess) {
-            backStack.add(Route.Home)
-            backStack.remove(Route.Login)
+            backStack.add(Route.Login)
+            backStack.remove(Route.SignUp)
         }
     }
-    LoginPage(
+    SignUpPage(
         uiState = uiState,
-        onEvent = loginScreenViewModel::onEvent,
-        onSignUpClick = {
-            backStack.add(Route.SignUp)
-            backStack.remove(Route.Login)
+        onEvent = signUpViewModel::onEvent,
+        onLoginClick = {
+            backStack.add(Route.Login)
+            backStack.remove(Route.SignUp)
         }
     )
 }
 
 @Composable
-private fun LoginPage(
-    uiState: LoginUiState,
-    onEvent: (LoginUiEvent) -> Unit,
-    onSignUpClick: () -> Unit
+private fun SignUpPage(
+    uiState: SignUpUiState,
+    onEvent: (SignUpUiEvent) -> Unit,
+    onLoginClick: () -> Unit
 ) {
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -83,17 +83,18 @@ private fun LoginPage(
             style = Typography.titleMedium,
             textAlign = TextAlign.Center,
             fontWeight = FontWeight.Bold,
-            text = stringResource(R.string.login_greeting)
+            text = stringResource(R.string.create_account)
         )
         Text(
             modifier = Modifier,
             style = Typography.titleSmall,
             textAlign = TextAlign.Center,
             fontWeight = FontWeight.Bold,
-            text = stringResource(R.string.login_subtitle)
+            text = stringResource(R.string.sign_up_subtitle)
         )
 
         Spacer(Modifier.height(Dimensions.large))
+
 
         Column(
             modifier = Modifier
@@ -112,7 +113,7 @@ private fun LoginPage(
                 email = uiState.email,
                 isValid = uiState.isEmailValid,
                 errorId = uiState.emailError,
-                onValueChange = { onEvent(LoginUiEvent.OnEmailChanged(it)) }
+                onValueChange = { onEvent(SignUpUiEvent.OnEmailChanged(it)) }
             )
 
             Spacer(Modifier.height(Dimensions.medium))
@@ -128,14 +129,30 @@ private fun LoginPage(
                 password = uiState.password,
                 isVisible = uiState.isPasswordVisible,
                 errorId = uiState.passwordError,
-                onValueChange = { onEvent(LoginUiEvent.OnPasswordChanged(it)) },
-                onToggleVisibility = { onEvent(LoginUiEvent.OnTogglePasswordVisibilityClicked) }
+                onValueChange = { onEvent(SignUpUiEvent.OnPasswordChanged(it)) },
+                onToggleVisibility = { onEvent(SignUpUiEvent.OnTogglePasswordVisibilityClicked) }
+            )
+
+            Spacer(Modifier.height(Dimensions.medium))
+
+            Text(
+                modifier = Modifier,
+                style = Typography.labelMedium,
+                text = stringResource(R.string.confirm_password)
+            )
+            Spacer(Modifier.height(Dimensions.small))
+
+            LoginPasswordField(
+                password = uiState.confirmPassword,
+                isVisible = uiState.isConfirmPasswordVisible,
+                errorId = uiState.confirmPasswordError,
+                onValueChange = { onEvent(SignUpUiEvent.OnConfirmPasswordChanged(it)) },
+                onToggleVisibility = { onEvent(SignUpUiEvent.OnToggleConfirmPasswordVisibilityClicked) }
             )
 
             Spacer(Modifier.height(Dimensions.large))
 
             if (uiState.firebaseErrorMessage != null) {
-                Spacer(modifier = Modifier.height(Dimensions.small))
                 Text(
                     text = uiState.firebaseErrorMessage,
                     color = Red,
@@ -143,13 +160,21 @@ private fun LoginPage(
                 )
             }
 
+            if(!uiState.isSamePasswords){
+                Text(
+                    text = stringResource(R.string.error_passwords_different),
+                    color = Red,
+                    style = Typography.bodySmall
+                )
+            }
+
+            Spacer(Modifier.height(Dimensions.large))
+
             GradientButton(
-                text = stringResource(R.string.sign_in),
-                onClick = { onEvent(LoginUiEvent.OnSignInClicked) },
+                text = stringResource(R.string.sign_up),
+                onClick = { onEvent(SignUpUiEvent.OnSignUpClicked) },
                 enabled = !uiState.isLoading
             )
-
-
         }
 
         Spacer(modifier = Modifier.height(Dimensions.medium))
@@ -159,31 +184,28 @@ private fun LoginPage(
             modifier = Modifier.fillMaxWidth()
         ) {
             Text(
-                text = stringResource(R.string.login_no_account),
+                text = stringResource(R.string.have_account),
                 style = Typography.bodyMedium
             )
             Text(
-                text = stringResource(R.string.sign_up),
+                text = stringResource(R.string.login),
                 style = Typography.bodyMedium,
                 color = Green800,
-                modifier = Modifier.clickable(onClick = { onSignUpClick() })
+                modifier = Modifier.clickable(onClick = { onLoginClick() })
             )
 
         }
     }
-
-
 }
-
 
 @Preview
 @Composable
-private fun LoginPagePreview() {
+private fun SignUpPagePreview() {
     GrowBoxTheme {
-        LoginPage(
-            uiState = LoginUiState(),
+        SignUpPage(
+            uiState = SignUpUiState(),
             onEvent = {},
-            onSignUpClick = {}
+            onLoginClick = {}
         )
     }
 }
