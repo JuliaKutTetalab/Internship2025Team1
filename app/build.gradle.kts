@@ -64,8 +64,11 @@ dependencies {
     debugImplementation(libs.androidx.compose.ui.test.manifest)
 
     implementation(libs.hilt.android)
+    implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
     ksp(libs.hilt.android.compiler)
     implementation(platform(libs.firebase.bom))
+
+    implementation(libs.firebase.auth)
 
     implementation(libs.androidx.navigation3.ui)
     implementation(libs.androidx.navigation3.runtime)
