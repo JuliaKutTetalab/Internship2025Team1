@@ -15,7 +15,7 @@ import com.arathort.growbox.presentation.splash.screen.SplashScreen
 
 @Composable
 fun NavigationRoot(modifier: Modifier = Modifier) {
-    val backStack = rememberNavBackStack(Route.Splash)
+    val backStack = rememberNavBackStack(Route.DeviceConnection)
 
     NavDisplay(
         backStack = backStack,
