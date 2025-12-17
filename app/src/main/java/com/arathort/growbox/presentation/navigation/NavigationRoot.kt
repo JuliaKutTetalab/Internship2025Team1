@@ -10,13 +10,13 @@ import androidx.navigation3.ui.NavDisplay
 import com.arathort.growbox.presentation.auth.login.LoginScreen
 import com.arathort.growbox.presentation.auth.signup.SignUpScreen
 import com.arathort.growbox.presentation.deviceconnection.DeviceConnectionScreen
-import com.arathort.growbox.presentation.deviceconnection.SearchingScreen
+import com.arathort.growbox.presentation.deviceconnection.search.SearchingScreen
 import com.arathort.growbox.presentation.onboarding.OnBoardingScreen
 import com.arathort.growbox.presentation.splash.screen.SplashScreen
 
 @Composable
 fun NavigationRoot(modifier: Modifier = Modifier) {
-    val backStack = rememberNavBackStack(Route.DeviceConnection)
+    val backStack = rememberNavBackStack(Route.Splash)
 
     NavDisplay(
         backStack = backStack,

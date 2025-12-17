@@ -17,10 +17,12 @@ object Dimensions {
 
     //images
     val iconSize = 70.dp
+    val mediumIconSize = 79.dp
     val largeIconSize = 142.dp
     val textFieldHeight = 48.dp
     val buttonHeight = 48.dp
     val mediumRadius = 12.dp
+    val bigRadius = 16.dp
     val iconArrowWidth = 7.dp
     val iconArrowHeight = 12.dp
 
@@ -35,4 +37,6 @@ object Dimensions {
     //text
     val textSizeBody = 18.sp
     val lineHeightBody = 22.sp
+
+    val cardHeight = 111.dp
 }

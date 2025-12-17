@@ -29,8 +29,10 @@
     <string name="connection_title">Connect your mobile device to GrowBox</string>
     <string name="connection_subtitle">Make sure that Bluetooth on your mobile device is turned on</string>
     <string name="connection_button_connect">Connect your device</string>
-    <string name="search_title">Searching for devices</string>
+    <string name="search_title">Searching for devices...</string>
     <string name="search_subtitle">It can take a couple of minutes</string>
+    <string name="search_connect_device">Connect device:</string>
+    <string name="version">Version</string>
 
     <string name="error_invalid_email">Please enter a valid email address.</string>
     <string name="error_password_requirements">Password must be 8+ chars, with letters, numbers, and symbols.</string>

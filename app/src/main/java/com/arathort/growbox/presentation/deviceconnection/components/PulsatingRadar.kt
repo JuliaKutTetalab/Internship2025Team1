@@ -35,19 +35,19 @@ fun PulsatingRadar(
         label = "progress"
     )
 
-    Box(modifier = modifier, contentAlignment = Alignment.Center) {
-        Canvas(modifier = Modifier) {
+    Box(modifier = modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+        Canvas(modifier = Modifier.fillMaxSize()) {
             val center = this.center
-            val maxRadius = size.minDimension / 2
+            val maxRadius = size.minDimension * 0.75f
 
-            val waves = listOf(0f, 0.33f, 0.66f)
+            val waves = listOf(0.33f, 0.66f, 0.99f)
 
             waves.forEach { offset ->
                 val currentProgress = (progress + offset) % 1f
 
                 val radius = maxRadius * currentProgress
 
-                val alpha = (1f - currentProgress) * 0.3f
+                val alpha = (1f - currentProgress)
 
                 drawCircle(
                     color = color.copy(alpha = alpha),
@@ -58,7 +58,7 @@ fun PulsatingRadar(
 
             drawCircle(
                 color = color,
-                radius = 41.dp.toPx(),
+                radius = 25.dp.toPx(),
                 center = center
             )
         }
