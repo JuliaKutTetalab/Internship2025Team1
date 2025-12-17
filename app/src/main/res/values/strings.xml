@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">GrowBox</string>
+    <string name="cancel">Cancel</string>
     <string name="splash_screen_greeting">Welcome to App</string>
     <string name="splash_image_content_description">splash image</string>
     <string name="login_greeting">Welcome back</string>
@@ -14,6 +15,7 @@
     <string name="have_account">Already have an account? </string>
     <string name="login">Log In </string>
     <string name="sign_up">Sign up</string>
+
     <string name="onboarding_image_description">Onboarding image</string>
     <string name="onboadring_first_page_title">Choose Your Plants</string>
     <string name="onboadring_second_page_title">Connect and Control</string>
@@ -23,6 +25,14 @@
     <string name="onboarding_third_page_description">See your plants flourish with helpful\ngraphs. You\'re set to grow and\nsucceed!</string>
     <string name="onboadring_button_skip">Skip</string>
     <string name="onboadring_button_next">Next</string>
+
+    <string name="connection_title">Connect your mobile device to GrowBox</string>
+    <string name="connection_subtitle">Make sure that Bluetooth on your mobile device is turned on</string>
+    <string name="connection_button_connect">Connect your device</string>
+    <string name="search_title">Searching for devices...</string>
+    <string name="search_subtitle">It can take a couple of minutes</string>
+    <string name="search_connect_device">Connect device:</string>
+    <string name="version">Version</string>
 
     <string name="error_invalid_email">Please enter a valid email address.</string>
     <string name="error_password_requirements">Password must be 8+ chars, with letters, numbers, and symbols.</string>

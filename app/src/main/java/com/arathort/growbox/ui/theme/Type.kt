@@ -16,11 +16,10 @@ val Inter = FontFamily(
 // Set of Material typography styles to start with
 val Typography = Typography(
     bodyLarge = TextStyle(
-        fontFamily = FontFamily.Default,
-        fontWeight = FontWeight.Normal,
-        fontSize = 16.sp,
-        lineHeight = 24.sp,
-        letterSpacing = 0.5.sp
+        fontFamily = Inter,
+        fontWeight = FontWeight.W700,
+        fontSize = 18.sp,
+        lineHeight = 22.sp
     ),
     titleMedium = TextStyle(
         fontFamily = Inter,
@@ -34,6 +33,13 @@ val Typography = Typography(
         fontSize = 16.sp,
         lineHeight = 22.sp,
         color = Grey400
+    ),
+    labelLarge = TextStyle(
+        fontFamily = Inter,
+        fontWeight = FontWeight.W700,
+        fontSize = 14.sp,
+        lineHeight = 22.sp,
+        color = Green800
     ),
     labelMedium = TextStyle(
         fontFamily = Inter,
