@@ -69,7 +69,7 @@ fun GradientButton(
             )
             Spacer(Modifier.width(Dimensions.micro))
             AsyncImage(
-                model = R.drawable.arrow,
+                model = R.drawable.ic_arrow,
                 contentDescription = stringResource(R.string.onboarding_image_description),
                 contentScale = ContentScale.Fit,
                 modifier = Modifier

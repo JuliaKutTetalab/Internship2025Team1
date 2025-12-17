@@ -3,19 +3,34 @@ package com.arathort.growbox.presentation.navigation
 import androidx.navigation3.runtime.NavKey
 import kotlinx.serialization.Serializable
 
-sealed interface Route: NavKey {
+sealed interface Route : NavKey {
     @Serializable
-    data object Splash: Route, NavKey
-    @Serializable
-    data object Login: Route, NavKey
+    data object Splash : Route, NavKey
 
     @Serializable
-    data object SignUp: Route, NavKey
+    data object Login : Route, NavKey
 
     @Serializable
-    data object Onboarding: Route, NavKey
-    data object DeviceConnection: Route, NavKey
+    data object SignUp : Route, NavKey
 
     @Serializable
-    data object Home: Route, NavKey
+    data object Onboarding : Route, NavKey
+    data object DeviceConnection : Route, NavKey
+
+    @Serializable
+    data object Dashboard : Route, NavKey
+    data object Statistic : Route, NavKey
 }
+sealed interface TabRoute: NavKey{
+    @Serializable
+    data object Home: TabRoute
+
+    @Serializable
+    data object Settings: TabRoute
+
+    @Serializable
+    data object Profile: TabRoute
+}
+
+
+
