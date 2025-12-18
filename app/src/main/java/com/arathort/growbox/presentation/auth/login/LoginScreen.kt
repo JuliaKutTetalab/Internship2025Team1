@@ -44,7 +44,7 @@ fun LoginScreen(
     val uiState = loginScreenViewModel.uiState.collectAsStateWithLifecycle().value
     LaunchedEffect(uiState.isSuccess) {
         if (uiState.isSuccess) {
-            backStack.add(Route.Dashboard)
+            backStack.add(Route.Onboarding)
             backStack.remove(Route.Login)
         }
     }
