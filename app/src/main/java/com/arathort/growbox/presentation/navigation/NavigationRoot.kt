@@ -12,11 +12,14 @@ import com.arathort.growbox.presentation.auth.signup.SignUpScreen
 import com.arathort.growbox.presentation.deviceconnection.DeviceConnectionScreen
 import com.arathort.growbox.presentation.deviceconnection.search.SearchingScreen
 import com.arathort.growbox.presentation.onboarding.OnBoardingScreen
+import com.arathort.growbox.presentation.auth.signup.SignUpScreen
+import com.arathort.growbox.presentation.detailstatistic.StatisticScreen
+import com.arathort.growbox.presentation.main.MainScreen
 import com.arathort.growbox.presentation.splash.screen.SplashScreen
 
 @Composable
 fun NavigationRoot(modifier: Modifier = Modifier) {
-    val backStack = rememberNavBackStack(Route.Splash)
+    val backStack = rememberNavBackStack(Route.Dashboard)
 
     NavDisplay(
         backStack = backStack,
@@ -62,10 +65,9 @@ fun NavigationRoot(modifier: Modifier = Modifier) {
                         )
                     }
                 }
-
-                is Route.Home -> {
-                    NavEntry(key) {
-
+                is Route.Dashboard ->{
+                    NavEntry(key){
+                        MainScreen()
                     }
                 }
 
@@ -76,6 +78,11 @@ fun NavigationRoot(modifier: Modifier = Modifier) {
                                 backStack.add(Route.Searching)
                             }
                         )
+                    }
+                }
+                is Route.Statistic ->{
+                    NavEntry(key){
+                        StatisticScreen()
                     }
                 }
 

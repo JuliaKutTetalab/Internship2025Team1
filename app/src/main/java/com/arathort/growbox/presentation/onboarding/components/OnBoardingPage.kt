@@ -12,19 +12,19 @@ data class OnBoardingPageData(
 val pagesData = listOf(
     OnBoardingPageData(
         title = R.string.onboadring_first_page_title,
-        image = R.drawable.onboarding_page_first,
+        image = R.drawable.img_onboarding_page_first,
         description = R.string.onboarding_first_page_description
     ),
 
     OnBoardingPageData(
         title = R.string.onboadring_second_page_title,
-        image = R.drawable.onboarding_page_second,
+        image = R.drawable.img_onboarding_page_second,
         description = R.string.onboarding_second_page_description
     ),
 
     OnBoardingPageData(
         title = R.string.onboadring_third_page_title,
-        image = R.drawable.onboarding_page_third,
+        image = R.drawable.img_onboarding_page_third,
         description = R.string.onboarding_third_page_description
     )
 )

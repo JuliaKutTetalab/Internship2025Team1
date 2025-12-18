@@ -5,13 +5,14 @@ import androidx.compose.ui.unit.sp
 
 object Dimensions {
     //paddings
-    val micro =8.dp
+    val micro = 8.dp
     val small = 12.dp
 
     val medium = 16.dp
     val mediumLarge = 20.dp
     val large = 32.dp
     val extraLarge = 40.dp
+    val xLarge = 54.dp
     val xxLarge = 60.dp
     val pagePadding = 24.dp
 
@@ -26,6 +27,8 @@ object Dimensions {
     val iconArrowWidth = 7.dp
     val iconArrowHeight = 12.dp
 
+    val standardIconSize = 24.dp
+
     //OnBoarding Specific
     val onBoardingActInd = 44.dp
     val onBoardingButtonHeight = 44.dp
@@ -33,6 +36,14 @@ object Dimensions {
 
     val onBoardingImageHeight = 220.dp
     val onBoardingImageSpacer = 98.dp
+
+    //Home Specific
+    val onHomeImageSize = 148.dp
+
+    val onHomeImageBorder = 1.dp
+    val onHomeProgIndWidth = 193.dp
+    val onHomeCardHeight = 115.dp
+    val roundCorner = 10.dp
 
     //text
     val textSizeBody = 18.sp
