@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -40,66 +41,71 @@ fun OnBoardingContent(
         derivedStateOf { pagerState.currentPage == pagesData.size - 1 }
     }
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .systemBarsPadding()
-            .padding(horizontal = Dimensions.pagePadding),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Spacer(modifier = Modifier.height(Dimensions.extraLarge))
-
-        HorizontalPager(
-            state = pagerState,
+    Scaffold { innerPadding ->
+        Column(
             modifier = Modifier
-                .fillMaxWidth()
-                .weight(1f),
-            verticalAlignment = Alignment.Top
-        ) { index ->
-            OnBoardingItem(page = pagesData[index])
-        }
-
-        Spacer(modifier = Modifier.height(Dimensions.extraLarge))
-
-        PageIndicator(
-            pageCount = pagerState.pageCount,
-            currentPage = pagerState.currentPage,
-        )
-
-        Spacer(modifier = Modifier.height(Dimensions.xxLarge))
-
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(bottom = Dimensions.mediumLarge),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween
+                .fillMaxSize()
+                .systemBarsPadding()
+                .padding(horizontal = Dimensions.pagePadding)
+                .padding(innerPadding),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
+            Spacer(modifier = Modifier.height(Dimensions.extraLarge))
 
-            TextButton(onClick = {
-                onEvent(OnBoardingUiEvent.FinishOnBoarding)
-            }) {
-                Text(
-                    text = stringResource(R.string.onboadring_button_skip),
-                    color = Green800,
-                    fontSize = Dimensions.textSizeBody,
-                    fontWeight = FontWeight.SemiBold,
-                    style = MaterialTheme.typography.bodyMedium
-                )
+            HorizontalPager(
+                state = pagerState,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(1f),
+                verticalAlignment = Alignment.Top
+            ) { index ->
+                OnBoardingItem(page = pagesData[index])
             }
 
-            GradientButton(
-                text = stringResource(R.string.onboadring_button_next),
-                onClick = {
-                    scope.launch {
-                        if (isLastPage) {
-                            onEvent(OnBoardingUiEvent.FinishOnBoarding)
-                        } else {
-                            pagerState.animateScrollToPage(pagerState.currentPage + 1)
-                        }
-                    }
-                },
+            Spacer(modifier = Modifier.height(Dimensions.extraLarge))
+
+            PageIndicator(
+                pageCount = pagerState.pageCount,
+                currentPage = pagerState.currentPage,
             )
+
+            Spacer(modifier = Modifier.height(Dimensions.xxLarge))
+
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = Dimensions.mediumLarge),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+
+                TextButton(onClick = {
+                    onEvent(OnBoardingUiEvent.FinishOnBoarding)
+                }) {
+                    Text(
+                        text = stringResource(R.string.onboadring_button_skip),
+                        color = Green800,
+                        fontSize = Dimensions.textSizeBody,
+                        fontWeight = FontWeight.SemiBold,
+                        style = MaterialTheme.typography.bodyMedium
+                    )
+                }
+
+                GradientButton(
+                    text = stringResource(R.string.onboadring_button_next),
+                    onClick = {
+                        scope.launch {
+                            if (isLastPage) {
+                                onEvent(OnBoardingUiEvent.FinishOnBoarding)
+                            } else {
+                                pagerState.animateScrollToPage(pagerState.currentPage + 1)
+                            }
+                        }
+                    },
+                )
+            }
         }
+
     }
+
 }

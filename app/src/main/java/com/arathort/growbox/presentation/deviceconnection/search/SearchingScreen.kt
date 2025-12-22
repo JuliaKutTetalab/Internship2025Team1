@@ -17,6 +17,7 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -67,28 +68,33 @@ fun SearchingPage(
     onBackClick: () -> Unit,
     uiState: SearchingScreenUiState
 ) {
-    Column {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = Dimensions.pagePadding)
+    Scaffold { innerPadding ->
+        Column(
+            modifier = Modifier.padding(innerPadding)
         ) {
-            IconButton(
-                onClick = { onBackClick() }
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = Dimensions.pagePadding)
             ) {
-                Icon(
-                    painter = painterResource(R.drawable.ic_arrow_back),
-                    contentDescription = null
-                )
+                IconButton(
+                    onClick = { onBackClick() }
+                ) {
+                    Icon(
+                        painter = painterResource(R.drawable.ic_arrow_back),
+                        contentDescription = null
+                    )
+                }
+
             }
 
+            if (!uiState.isFound) {
+                SearchingComponent(onBackClick)
+            } else {
+                ConnectedDevices(mockGrowBox = uiState.mockGrowBox)
+            }
         }
 
-        if (!uiState.isFound) {
-            SearchingComponent(onBackClick)
-        } else {
-            ConnectedDevices(mockGrowBox = uiState.mockGrowBox)
-        }
     }
 }
 
@@ -146,7 +152,7 @@ private fun SearchingComponent(onBackClick: () -> Unit) {
 }
 
 @Composable
-fun ConnectedDevices(mockGrowBox: MockGrowBox) {
+private fun ConnectedDevices(mockGrowBox: MockGrowBox) {
     Column(
         modifier = Modifier
             .fillMaxSize()
