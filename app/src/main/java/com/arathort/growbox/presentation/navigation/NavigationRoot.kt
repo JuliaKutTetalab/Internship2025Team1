@@ -11,6 +11,7 @@ import com.arathort.growbox.presentation.auth.login.LoginScreen
 import com.arathort.growbox.presentation.auth.signup.SignUpScreen
 import com.arathort.growbox.presentation.detailstatistic.StatisticScreen
 import com.arathort.growbox.presentation.deviceconnection.DeviceConnectionScreen
+import com.arathort.growbox.presentation.deviceconnection.connecting.ConnectingScreen
 import com.arathort.growbox.presentation.deviceconnection.search.SearchingScreen
 import com.arathort.growbox.presentation.main.MainScreen
 import com.arathort.growbox.presentation.onboarding.OnBoardingScreen
@@ -18,7 +19,7 @@ import com.arathort.growbox.presentation.splash.screen.SplashScreen
 
 @Composable
 fun NavigationRoot() {
-    val backStack = rememberNavBackStack(Route.Splash)
+    val backStack = rememberNavBackStack(Route.Searching)
 
     NavDisplay(
         backStack = backStack,
@@ -67,6 +68,9 @@ fun NavigationRoot() {
                 SearchingScreen(
                     backStack = backStack
                 )
+            }
+            entry<Route.Connecting> {
+                ConnectingScreen(backStack = backStack)
             }
             entry<Route.Statistic> {
                 StatisticScreen()

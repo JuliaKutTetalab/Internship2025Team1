@@ -23,6 +23,9 @@ sealed interface Route : NavKey {
     data object Searching: Route
 
     @Serializable
+    data object Connecting: Route
+
+    @Serializable
     data object Dashboard : Route
 
     @Serializable
