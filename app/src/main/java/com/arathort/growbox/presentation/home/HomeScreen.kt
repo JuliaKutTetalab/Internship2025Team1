@@ -28,9 +28,9 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.arathort.growbox.R
 import com.arathort.growbox.presentation.common.Dimensions
-import com.arathort.growbox.presentation.home.components.ControlCard
+import com.arathort.growbox.presentation.common.card.ControlCard
 import com.arathort.growbox.presentation.home.components.GradientProgressIndicator
-import com.arathort.growbox.presentation.home.components.SensorCard
+import com.arathort.growbox.presentation.common.card.SensorCard
 import com.arathort.growbox.ui.theme.*
 
 @Composable
@@ -38,15 +38,11 @@ fun HomeScreen(homeViewModel: HomeViewModel = hiltViewModel()) {
 
     val uiState by homeViewModel.uiState.collectAsStateWithLifecycle()
 
-    HomePage(
-        uiState,
-        onVentChanged = { isEnabled ->
-            homeViewModel.onEvent(HomeUiEvent.onVentToggle(isEnabled))
-        },
-        onWateringChanged = { isEnabled ->
-            homeViewModel.onEvent(HomeUiEvent.onWateringToggle(isEnabled))
-        }
-    )
+    HomePage(uiState, onVentChanged = { isEnabled ->
+        homeViewModel.onEvent(HomeUiEvent.onVentToggle(isEnabled))
+    }, onWateringChanged = { isEnabled ->
+        homeViewModel.onEvent(HomeUiEvent.onWateringToggle(isEnabled))
+    })
 }
 
 @Composable
@@ -80,9 +76,7 @@ fun HomePage(
                 .size(Dimensions.onHomeImageSize)
                 .clip(CircleShape)
                 .border(
-                    width = Dimensions.onHomeImageBorder,
-                    brush = borderBrush,
-                    shape = CircleShape
+                    width = Dimensions.onHomeImageBorder, brush = borderBrush, shape = CircleShape
                 )
         )
 
@@ -122,10 +116,13 @@ fun HomePage(
                 ) {
                     append("${uiState.daysGrown}")
                 }
-                append("/${uiState.totalDays} days (${uiState.totalDays - uiState.daysGrown} days till harvest)")
-            },
-            style = Typography.labelMedium,
-            color = MaterialTheme.custom.counterDay
+                append(
+                    stringResource(
+                        R.string.days_days_till_harvest,
+                        uiState.totalDays,
+                        uiState.daysRemaining
+                    ))
+            }, style = Typography.labelMedium, color = MaterialTheme.custom.counterDay
         )
 
         Spacer(Modifier.height(Dimensions.large))
@@ -133,7 +130,7 @@ fun HomePage(
         Row(modifier = Modifier.fillMaxWidth()) {
             SensorCard(
                 title = stringResource(R.string.light),
-                value = "${uiState.lightLevel}%",
+                value = stringResource(R.string.sensor_value_percent, uiState.lightLevel),
                 iconRes = R.drawable.ic_light,
                 onClick = {},
                 modifier = Modifier.weight(1f)
@@ -141,7 +138,7 @@ fun HomePage(
             Spacer(Modifier.width(Dimensions.medium))
             SensorCard(
                 title = stringResource(R.string.temperature),
-                value = "${uiState.temperature}°C",
+                value = stringResource(R.string.sensor_value_tempetarure, uiState.temperature),
                 iconRes = R.drawable.ic_temperature,
                 onClick = {},
                 modifier = Modifier.weight(1f)
@@ -153,7 +150,7 @@ fun HomePage(
         Row(modifier = Modifier.fillMaxWidth()) {
             SensorCard(
                 title = stringResource(R.string.humidity),
-                value = "${uiState.humidity}%",
+                value = stringResource(R.string.sensor_value_percent,uiState.humidity),
                 iconRes = R.drawable.ic_humidity,
                 onClick = {},
                 modifier = Modifier.weight(1f)
@@ -161,7 +158,7 @@ fun HomePage(
             Spacer(Modifier.width(Dimensions.medium))
             SensorCard(
                 title = stringResource(R.string.nutrition),
-                value = "${uiState.nutritionLevel}%",
+                value = stringResource(R.string.sensor_value_percent,uiState.nutritionLevel),
                 iconRes = R.drawable.ic_nutrion,
                 onClick = {},
                 modifier = Modifier.weight(1f)
@@ -193,27 +190,25 @@ fun HomePage(
 }
 
 @Preview(
-    name = "Light Mode",
-    showBackground = true,
-    uiMode = Configuration.UI_MODE_NIGHT_NO
+    name = "Light Mode", showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_NO
 )
 @Composable
 fun HomePagePreview() {
     GrowBoxTheme {
         HomePage(
             uiState = HomeUiState(
-                isLoading = false,
-                cropName = "Microgreens",
-                daysGrown = 12,
-                totalDays = 21,
-                temperature = 24,
-                humidity = 58,
-                lightLevel = 60,
-                nutritionLevel = 78,
-                isVentOn = true,
-                isWateringOn = true,
-                progress = 0.57f,
-                connectionStatus = ConnectionStatus.CONNECTED
-            ), onVentChanged = {}, onWateringChanged = {})
+            isLoading = false,
+            cropName = "Microgreens",
+            daysGrown = 12,
+            totalDays = 21,
+            temperature = 24,
+            humidity = 58,
+            lightLevel = 60,
+            nutritionLevel = 78,
+            isVentOn = true,
+            isWateringOn = true,
+            progress = 0.57f,
+            connectionStatus = ConnectionStatus.CONNECTED
+        ), onVentChanged = {}, onWateringChanged = {})
     }
 }

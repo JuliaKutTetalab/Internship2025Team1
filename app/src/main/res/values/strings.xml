@@ -45,4 +45,8 @@
     <string name="nutrition">Nutrition</string>
     <string name="vent">Vent</string>
     <string name="watering">Watering</string>
+    <string name="sensor_value_percent">%1$d%</string>
+    <string name="sensor_value_tempetarure">%1$d°C</string>
+    <string name="icon">%1$s icon</string>
+    <string name="days_days_till_harvest">/%1$d days (%2$d days till harvest)</string>
 </resources>

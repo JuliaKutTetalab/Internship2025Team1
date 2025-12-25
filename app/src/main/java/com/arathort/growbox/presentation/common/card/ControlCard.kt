@@ -1,4 +1,4 @@
-package com.arathort.growbox.presentation.home.components
+package com.arathort.growbox.presentation.common.card
 
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.layout.*
@@ -12,8 +12,10 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color.Companion.Transparent
 import androidx.compose.ui.graphics.Color.Companion.White
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import com.arathort.growbox.R
 import com.arathort.growbox.presentation.common.Dimensions
 import com.arathort.growbox.ui.theme.Grey300
 import com.arathort.growbox.ui.theme.Typography
@@ -48,7 +50,7 @@ fun ControlCard(
 
             Icon(
                 painter = painterResource(id = iconRes),
-                contentDescription = "$title icon",
+                contentDescription = stringResource(R.string.icon, title),
                 modifier = Modifier.size(Dimensions.standardIconSize),
                 tint = MaterialTheme.custom.sensorIcon
             )

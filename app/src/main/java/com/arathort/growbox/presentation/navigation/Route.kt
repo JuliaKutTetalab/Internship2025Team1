@@ -4,6 +4,7 @@ import androidx.navigation3.runtime.NavKey
 import kotlinx.serialization.Serializable
 
 sealed interface Route : NavKey {
+    @Serializable
      data object Splash: Route
 
     @Serializable
@@ -23,6 +24,7 @@ sealed interface Route : NavKey {
 
     @Serializable
     data object Dashboard : Route, NavKey
+    @Serializable
     data object Statistic : Route, NavKey
  
 
