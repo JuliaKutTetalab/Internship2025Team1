@@ -26,6 +26,9 @@ sealed interface Route : NavKey {
     data object Connecting: Route
 
     @Serializable
+    data object CropTypeSelection: Route
+
+    @Serializable
     data object Dashboard : Route
 
     @Serializable

@@ -13,13 +13,14 @@ import com.arathort.growbox.presentation.detailstatistic.StatisticScreen
 import com.arathort.growbox.presentation.deviceconnection.DeviceConnectionScreen
 import com.arathort.growbox.presentation.deviceconnection.connecting.ConnectingScreen
 import com.arathort.growbox.presentation.deviceconnection.search.SearchingScreen
+import com.arathort.growbox.presentation.deviceconnection.selection.SelectCropTypeScreen
 import com.arathort.growbox.presentation.main.MainScreen
 import com.arathort.growbox.presentation.onboarding.OnBoardingScreen
 import com.arathort.growbox.presentation.splash.screen.SplashScreen
 
 @Composable
 fun NavigationRoot() {
-    val backStack = rememberNavBackStack(Route.Searching)
+    val backStack = rememberNavBackStack(Route.CropTypeSelection)
 
     NavDisplay(
         backStack = backStack,
@@ -55,7 +56,6 @@ fun NavigationRoot() {
             }
             entry<Route.Dashboard> {
                 MainScreen()
-
             }
             entry<Route.DeviceConnection> {
                 DeviceConnectionScreen(
@@ -72,8 +72,13 @@ fun NavigationRoot() {
             entry<Route.Connecting> {
                 ConnectingScreen(backStack = backStack)
             }
+
             entry<Route.Statistic> {
                 StatisticScreen()
+            }
+
+            entry<Route.CropTypeSelection> {
+                SelectCropTypeScreen(backStack = backStack)
             }
         }
     )

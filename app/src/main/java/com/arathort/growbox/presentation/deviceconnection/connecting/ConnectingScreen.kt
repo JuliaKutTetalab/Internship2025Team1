@@ -66,7 +66,8 @@ fun ConnectingScreen(
     ConnectingPage(
         uiState,
         onBackClick = { backStack.remove(Route.Connecting) },
-        progress = progress.value
+        progress = progress.value,
+        onNextClick = { backStack.add(Route.CropTypeSelection) }
     )
 }
 
@@ -74,7 +75,8 @@ fun ConnectingScreen(
 private fun ConnectingPage(
     uiState: ConnectingScreenUiState,
     onBackClick: () -> Unit,
-    progress: Float
+    progress: Float,
+    onNextClick: () -> Unit
 ) {
     Scaffold { innerPadding ->
         Column(
@@ -99,7 +101,7 @@ private fun ConnectingPage(
             if (!uiState.isConnected) {
                 ConnectingProcessPart(onBackClick, growBox = uiState.growBox, progress = progress)
             } else {
-                ConnectedDevice(growBox = uiState.growBox)
+                ConnectedDevice(growBox = uiState.growBox, onNextClick = onNextClick)
             }
         }
     }
@@ -198,7 +200,7 @@ private fun ConnectingProcessPart(onBackClick: () -> Unit, growBox: MockGrowBox,
 }
 
 @Composable
-private fun ConnectedDevice(growBox: MockGrowBox) {
+private fun ConnectedDevice(growBox: MockGrowBox, onNextClick: () -> Unit) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -260,7 +262,7 @@ private fun ConnectedDevice(growBox: MockGrowBox) {
         Column {
             GradientButton(
                 text = stringResource(R.string.connecting_next),
-                onClick = { }
+                onClick = { onNextClick() }
             )
             Spacer(Modifier.height(Dimensions.large))
         }
@@ -274,7 +276,8 @@ private fun ConnectingPagePreview() {
         ConnectingPage(
             uiState = ConnectingScreenUiState(),
             onBackClick = {},
-            progress = 0f
+            progress = 0f,
+            onNextClick = {}
         )
     }
 }
