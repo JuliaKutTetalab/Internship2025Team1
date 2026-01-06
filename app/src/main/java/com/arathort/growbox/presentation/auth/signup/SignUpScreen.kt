@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -64,137 +65,142 @@ private fun SignUpPage(
     onEvent: (SignUpUiEvent) -> Unit,
     onLoginClick: () -> Unit
 ) {
-    Column(
-        modifier = Modifier.fillMaxSize(),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
-    ) {
-
-        Image(
-            painter = painterResource(R.drawable.ic_logo_auth),
-            contentDescription = stringResource(R.string.splash_image_content_description),
-            modifier = Modifier.size(Dimensions.iconSize)
-        )
-
-        Spacer(Modifier.height(Dimensions.large))
-
-        Text(
-            modifier = Modifier,
-            style = Typography.titleMedium,
-            textAlign = TextAlign.Center,
-            fontWeight = FontWeight.Bold,
-            text = stringResource(R.string.create_account)
-        )
-        Text(
-            modifier = Modifier,
-            style = Typography.titleSmall,
-            textAlign = TextAlign.Center,
-            fontWeight = FontWeight.Bold,
-            text = stringResource(R.string.sign_up_subtitle)
-        )
-
-        Spacer(Modifier.height(Dimensions.large))
-
-
+    Scaffold { innerPadding ->
         Column(
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = Dimensions.medium)
+                .fillMaxSize()
+                .padding(innerPadding),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
         ) {
-            Text(
-                modifier = Modifier,
-                style = Typography.labelMedium,
-                text = stringResource(R.string.email)
-            )
 
-            Spacer(Modifier.height(Dimensions.small))
-
-            LoginEmailField(
-                email = uiState.email,
-                isValid = uiState.isEmailValid,
-                errorId = uiState.emailError,
-                onValueChange = { onEvent(SignUpUiEvent.OnEmailChanged(it)) }
-            )
-
-            Spacer(Modifier.height(Dimensions.medium))
-
-            Text(
-                modifier = Modifier,
-                style = Typography.labelMedium,
-                text = stringResource(R.string.password)
-            )
-            Spacer(Modifier.height(Dimensions.small))
-
-            LoginPasswordField(
-                password = uiState.password,
-                isVisible = uiState.isPasswordVisible,
-                errorId = uiState.passwordError,
-                onValueChange = { onEvent(SignUpUiEvent.OnPasswordChanged(it)) },
-                onToggleVisibility = { onEvent(SignUpUiEvent.OnTogglePasswordVisibilityClicked) }
-            )
-
-            Spacer(Modifier.height(Dimensions.medium))
-
-            Text(
-                modifier = Modifier,
-                style = Typography.labelMedium,
-                text = stringResource(R.string.confirm_password)
-            )
-            Spacer(Modifier.height(Dimensions.small))
-
-            LoginPasswordField(
-                password = uiState.confirmPassword,
-                isVisible = uiState.isConfirmPasswordVisible,
-                errorId = uiState.confirmPasswordError,
-                onValueChange = { onEvent(SignUpUiEvent.OnConfirmPasswordChanged(it)) },
-                onToggleVisibility = { onEvent(SignUpUiEvent.OnToggleConfirmPasswordVisibilityClicked) }
+            Image(
+                painter = painterResource(R.drawable.ic_logo_auth),
+                contentDescription = stringResource(R.string.splash_image_content_description),
+                modifier = Modifier.size(Dimensions.iconSize)
             )
 
             Spacer(Modifier.height(Dimensions.large))
 
-            if (uiState.firebaseErrorMessage != null) {
-                Text(
-                    text = uiState.firebaseErrorMessage,
-                    color = Red,
-                    style = Typography.bodySmall
-                )
-            }
-
-            if(!uiState.isSamePasswords){
-                Text(
-                    text = stringResource(R.string.error_passwords_different),
-                    color = Red,
-                    style = Typography.bodySmall
-                )
-            }
+            Text(
+                modifier = Modifier,
+                style = Typography.titleMedium,
+                textAlign = TextAlign.Center,
+                fontWeight = FontWeight.Bold,
+                text = stringResource(R.string.create_account)
+            )
+            Text(
+                modifier = Modifier,
+                style = Typography.titleSmall,
+                textAlign = TextAlign.Center,
+                fontWeight = FontWeight.Bold,
+                text = stringResource(R.string.sign_up_subtitle)
+            )
 
             Spacer(Modifier.height(Dimensions.large))
 
-            GradientButton(
-                text = stringResource(R.string.sign_up),
-                onClick = { onEvent(SignUpUiEvent.OnSignUpClicked) },
-                enabled = !uiState.isLoading
-            )
+
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = Dimensions.medium)
+            ) {
+                Text(
+                    modifier = Modifier,
+                    style = Typography.labelMedium,
+                    text = stringResource(R.string.email)
+                )
+
+                Spacer(Modifier.height(Dimensions.small))
+
+                LoginEmailField(
+                    email = uiState.email,
+                    isValid = uiState.isEmailValid,
+                    errorId = uiState.emailError,
+                    onValueChange = { onEvent(SignUpUiEvent.OnEmailChanged(it)) }
+                )
+
+                Spacer(Modifier.height(Dimensions.medium))
+
+                Text(
+                    modifier = Modifier,
+                    style = Typography.labelMedium,
+                    text = stringResource(R.string.password)
+                )
+                Spacer(Modifier.height(Dimensions.small))
+
+                LoginPasswordField(
+                    password = uiState.password,
+                    isVisible = uiState.isPasswordVisible,
+                    errorId = uiState.passwordError,
+                    onValueChange = { onEvent(SignUpUiEvent.OnPasswordChanged(it)) },
+                    onToggleVisibility = { onEvent(SignUpUiEvent.OnTogglePasswordVisibilityClicked) }
+                )
+
+                Spacer(Modifier.height(Dimensions.medium))
+
+                Text(
+                    modifier = Modifier,
+                    style = Typography.labelMedium,
+                    text = stringResource(R.string.confirm_password)
+                )
+                Spacer(Modifier.height(Dimensions.small))
+
+                LoginPasswordField(
+                    password = uiState.confirmPassword,
+                    isVisible = uiState.isConfirmPasswordVisible,
+                    errorId = uiState.confirmPasswordError,
+                    onValueChange = { onEvent(SignUpUiEvent.OnConfirmPasswordChanged(it)) },
+                    onToggleVisibility = { onEvent(SignUpUiEvent.OnToggleConfirmPasswordVisibilityClicked) }
+                )
+
+                Spacer(Modifier.height(Dimensions.large))
+
+                if (uiState.firebaseErrorMessage != null) {
+                    Text(
+                        text = uiState.firebaseErrorMessage,
+                        color = Red,
+                        style = Typography.bodySmall
+                    )
+                }
+
+                if (!uiState.isSamePasswords) {
+                    Text(
+                        text = stringResource(R.string.error_passwords_different),
+                        color = Red,
+                        style = Typography.bodySmall
+                    )
+                }
+
+                Spacer(Modifier.height(Dimensions.large))
+
+                GradientButton(
+                    text = stringResource(R.string.sign_up),
+                    onClick = { onEvent(SignUpUiEvent.OnSignUpClicked) },
+                    enabled = !uiState.isLoading
+                )
+            }
+
+            Spacer(modifier = Modifier.height(Dimensions.medium))
+
+            Row(
+                horizontalArrangement = Arrangement.Center,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text(
+                    text = stringResource(R.string.have_account),
+                    style = Typography.bodyMedium
+                )
+                Text(
+                    text = stringResource(R.string.login),
+                    style = Typography.bodyMedium,
+                    color = Green800,
+                    modifier = Modifier.clickable(onClick = { onLoginClick() })
+                )
+
+            }
         }
 
-        Spacer(modifier = Modifier.height(Dimensions.medium))
-
-        Row(
-            horizontalArrangement = Arrangement.Center,
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Text(
-                text = stringResource(R.string.have_account),
-                style = Typography.bodyMedium
-            )
-            Text(
-                text = stringResource(R.string.login),
-                style = Typography.bodyMedium,
-                color = Green800,
-                modifier = Modifier.clickable(onClick = { onLoginClick() })
-            )
-
-        }
     }
 }
 
