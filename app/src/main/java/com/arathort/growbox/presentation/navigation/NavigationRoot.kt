@@ -18,7 +18,7 @@ import com.arathort.growbox.presentation.splash.screen.SplashScreen
 
 @Composable
 fun NavigationRoot(modifier: Modifier = Modifier) {
-    val backStack = rememberNavBackStack(Route.Onboarding)
+    val backStack = rememberNavBackStack(Route.Splash)
 
     NavDisplay(
         backStack = backStack,
@@ -31,10 +31,9 @@ fun NavigationRoot(modifier: Modifier = Modifier) {
             when (key) {
                 is Route.Splash -> {
                     NavEntry(key) {
-                        SplashScreen(onNavigateToLogin = {
-                            backStack.add(Route.Login)
-                            backStack.remove(Route.Splash)
-                        })
+                        SplashScreen(
+                            backStack = backStack
+                        )
                     }
                 }
 

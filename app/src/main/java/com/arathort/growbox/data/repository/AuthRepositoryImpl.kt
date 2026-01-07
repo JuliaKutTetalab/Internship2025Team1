@@ -20,4 +20,8 @@ class AuthRepositoryImpl @Inject constructor(
     ): Result<Unit> {
         return firebaseAuthDataSource.signUp(email, password)
     }
+
+    override suspend fun isUserLoggedIn(): Boolean {
+        return firebaseAuthDataSource.isUserLoggedIn()
+    }
 }

@@ -72,7 +72,15 @@ val Typography = Typography(
         fontWeight = FontWeight.SemiBold,
         fontSize = 18.sp,
         lineHeight = 18.sp
-    )
+    ),
+    headlineLarge = TextStyle(
+        fontFamily = Inter,
+        fontWeight = FontWeight.Bold,
+        fontSize = 32.sp,
+        lineHeight = 40.sp,
+        letterSpacing = 0.sp
+    ),
+
 
     /* Other default text styles to override
     titleLarge = TextStyle(
