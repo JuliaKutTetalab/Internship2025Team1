@@ -17,9 +17,11 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
@@ -53,10 +55,15 @@ fun SearchingScreen(
         delay(2000L)
         viewModel.onEvent(SearchingScreenUiEvent.DeviceFound)
     }
-    val uiState = viewModel.uiState.collectAsStateWithLifecycle().value
+
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
     SearchingPage(
         onBackClick = {
             backStack.remove(Route.Searching)
+        },
+        onDeviceClick = {
+            backStack.add(Route.Connecting)
         },
         uiState = uiState
     )
@@ -65,30 +72,36 @@ fun SearchingScreen(
 @Composable
 fun SearchingPage(
     onBackClick: () -> Unit,
+    onDeviceClick: () -> Unit,
     uiState: SearchingScreenUiState
 ) {
-    Column {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = Dimensions.pagePadding)
+    Scaffold { innerPadding ->
+        Column(
+            modifier = Modifier.padding(innerPadding)
         ) {
-            IconButton(
-                onClick = { onBackClick() }
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = Dimensions.pagePadding)
             ) {
-                Icon(
-                    painter = painterResource(R.drawable.ic_arrow_back),
-                    contentDescription = null
-                )
+                IconButton(
+                    onClick = { onBackClick() }
+                ) {
+                    Icon(
+                        painter = painterResource(R.drawable.ic_arrow_back),
+                        contentDescription = null
+                    )
+                }
+
             }
 
+            if (!uiState.isFound) {
+                SearchingComponent(onBackClick)
+            } else {
+                ConnectedDevices(mockGrowBox = uiState.mockGrowBox, onDeviceClick = onDeviceClick)
+            }
         }
 
-        if (!uiState.isFound) {
-            SearchingComponent(onBackClick)
-        } else {
-            ConnectedDevices(mockGrowBox = uiState.mockGrowBox)
-        }
     }
 }
 
@@ -146,7 +159,7 @@ private fun SearchingComponent(onBackClick: () -> Unit) {
 }
 
 @Composable
-fun ConnectedDevices(mockGrowBox: MockGrowBox) {
+private fun ConnectedDevices(mockGrowBox: MockGrowBox, onDeviceClick: () -> Unit) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -166,7 +179,7 @@ fun ConnectedDevices(mockGrowBox: MockGrowBox) {
         Spacer(Modifier.height(Dimensions.extraLarge))
 
         Card(
-            onClick = {},
+            onClick = { onDeviceClick() },
             modifier = Modifier
                 .fillMaxWidth()
                 .height(Dimensions.cardHeight)
@@ -217,6 +230,7 @@ private fun SearchingPagePreview() {
     GrowBoxTheme {
         SearchingPage(
             onBackClick = {},
+            onDeviceClick = {},
             uiState = SearchingScreenUiState(isFound = true)
         )
     }

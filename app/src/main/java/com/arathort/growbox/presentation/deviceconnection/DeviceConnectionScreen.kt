@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -30,52 +31,56 @@ fun DeviceConnectionScreen(onConnectClick: () -> Unit) {
 
 @Composable
 private fun DeviceConnectionPage(onConnectClick: () -> Unit) {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(Dimensions.pagePadding),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.SpaceBetween,
-    ) {
+    Scaffold { innerPadding ->
         Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(Dimensions.pagePadding)
+                .padding(innerPadding),
             horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.SpaceBetween,
         ) {
-            Spacer(Modifier.height(Dimensions.medium))
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+            ) {
+                Spacer(Modifier.height(Dimensions.medium))
 
-            Text(
-                modifier = Modifier,
-                style = Typography.titleMedium,
-                textAlign = TextAlign.Center,
-                fontWeight = FontWeight.Bold,
-                text = stringResource(R.string.connection_title)
-            )
+                Text(
+                    modifier = Modifier,
+                    style = Typography.titleMedium,
+                    textAlign = TextAlign.Center,
+                    fontWeight = FontWeight.Bold,
+                    text = stringResource(R.string.connection_title)
+                )
 
-            Spacer(Modifier.height(Dimensions.medium))
+                Spacer(Modifier.height(Dimensions.medium))
 
-            Text(
-                modifier = Modifier,
-                style = Typography.titleSmall,
-                textAlign = TextAlign.Center,
-                fontWeight = FontWeight.Bold,
-                text = stringResource(R.string.connection_subtitle)
-            )
+                Text(
+                    modifier = Modifier,
+                    style = Typography.titleSmall,
+                    textAlign = TextAlign.Center,
+                    fontWeight = FontWeight.Bold,
+                    text = stringResource(R.string.connection_subtitle)
+                )
 
-            Spacer(Modifier.height(Dimensions.xxLarge))
+                Spacer(Modifier.height(Dimensions.xxLarge))
 
-            Image(
-                painter = painterResource(R.drawable.ic_groupbox),
-                contentDescription = stringResource(R.string.splash_image_content_description),
-                modifier = Modifier.size(Dimensions.largeIconSize)
-            )
+                Image(
+                    painter = painterResource(R.drawable.ic_groupbox),
+                    contentDescription = stringResource(R.string.splash_image_content_description),
+                    modifier = Modifier.size(Dimensions.largeIconSize)
+                )
 
+            }
+
+            Column {
+                GradientButton(
+                    text = stringResource(R.string.connection_button_connect),
+                    onClick = { onConnectClick() })
+                Spacer(Modifier.height(Dimensions.medium))
+            }
         }
 
-        Column {
-            GradientButton(
-                text = stringResource(R.string.connection_button_connect),
-                onClick = { onConnectClick() })
-            Spacer(Modifier.height(Dimensions.medium))
-        }
     }
 }
 

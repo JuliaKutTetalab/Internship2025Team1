@@ -32,6 +32,12 @@
     <string name="search_subtitle">It can take a couple of minutes</string>
     <string name="search_connect_device">Connect device:</string>
     <string name="version">Version</string>
+    <string name="connecting">Connecting...</string>
+    <string name="connecting_connected">Connected</string>
+    <string name="connecting_next">Next</string>
+
+    <string name="selection_title">Select crop type</string>
+    <string name="selection_button_text">Start planting</string>
 
     <string name="error_invalid_email">Please enter a valid email address.</string>
     <string name="error_password_requirements">Password must be 8+ chars, with letters, numbers, and symbols.</string>
