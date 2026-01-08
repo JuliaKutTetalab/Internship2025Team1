@@ -39,10 +39,9 @@ fun NavigationRoot() {
                 )
             }
             entry<Route.Splash> {
-                SplashScreen(onNavigateToLogin = {
-                    backStack.add(Route.Login)
-                    backStack.remove(Route.Splash)
-                })
+                SplashScreen(
+                    backStack = backStack
+                )
             }
             entry<Route.Login> {
                 LoginScreen(

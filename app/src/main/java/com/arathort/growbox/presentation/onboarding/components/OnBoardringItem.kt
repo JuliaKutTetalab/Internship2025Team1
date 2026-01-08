@@ -1,5 +1,6 @@
 package com.arathort.growbox.presentation.onboarding.components
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -12,6 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -19,6 +21,7 @@ import com.arathort.growbox.presentation.common.Dimensions
 import com.arathort.growbox.ui.theme.Black
 import coil.compose.AsyncImage
 import com.arathort.growbox.R
+import com.arathort.growbox.ui.theme.Typography
 
 @Composable
 fun OnBoardingItem(
@@ -27,21 +30,20 @@ fun OnBoardingItem(
     Column(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Top
     ) {
         Text(
             text = stringResource(page.title),
-            style = MaterialTheme.typography.headlineMedium,
+            style = Typography.titleMedium,
             fontWeight = FontWeight.Bold,
             textAlign = TextAlign.Center,
             color = MaterialTheme.colorScheme.onBackground
         )
 
-        Spacer(modifier = Modifier.height(Dimensions.onBoardingImageSpacer))
+        Spacer(modifier = Modifier.weight(1f))
 
-        AsyncImage(
-            model = page.image,
-            contentDescription = stringResource(R.string.onboarding_image_description),
+        Image(
+            painter = painterResource(page.image),
+            contentDescription = null,
             contentScale = ContentScale.Fit,
             modifier = Modifier
                 .height(Dimensions.onBoardingImageHeight)

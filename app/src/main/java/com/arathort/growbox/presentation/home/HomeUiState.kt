@@ -13,7 +13,10 @@ data class HomeUiState(
     val isWateringOn:Boolean=false,
     val progress:Float=0f,
     val connectionStatus: ConnectionStatus = ConnectionStatus.DISCONNECTED
-)
+){
+    val daysRemaining: Int
+        get() = (totalDays - daysGrown).coerceAtLeast(0)
+}
 
 enum class ConnectionStatus {
     CONNECTED, CONNECTING, DISCONNECTED

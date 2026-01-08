@@ -8,11 +8,12 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -21,15 +22,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
-import coil.compose.AsyncImage
 import com.arathort.growbox.R
 import com.arathort.growbox.presentation.common.Dimensions
 import com.arathort.growbox.ui.theme.Green500
 import com.arathort.growbox.ui.theme.Green800
+import com.arathort.growbox.ui.theme.Typography
 import com.arathort.growbox.ui.theme.White
+
 
 @Composable
 fun GradientButton(
@@ -64,17 +65,15 @@ fun GradientButton(
             Text(
                 text = text,
                 color = White,
-                fontWeight = FontWeight.Bold,
-                style = MaterialTheme.typography.bodyLarge
+                style = Typography.headlineMedium
             )
             Spacer(Modifier.width(Dimensions.micro))
-            AsyncImage(
-                model = R.drawable.ic_arrow,
-                contentDescription = stringResource(R.string.onboarding_image_description),
-                contentScale = ContentScale.Fit,
+            Icon(
+                painter = painterResource(id = R.drawable.ic_arrow),
+                contentDescription = null,
+                tint = Green800,
                 modifier = Modifier
-                    .height(Dimensions.iconArrowHeight)
-                    .width(Dimensions.iconArrowWidth)
+                    .size(Dimensions.standardIconSize)
             )
         }
     }

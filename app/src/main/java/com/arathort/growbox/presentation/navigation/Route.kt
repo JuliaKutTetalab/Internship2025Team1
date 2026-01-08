@@ -33,7 +33,7 @@ sealed interface Route : NavKey {
 
     @Serializable
     data object Statistic : Route
- }
+}
 sealed interface TabRoute: NavKey{
     @Serializable
     data object Home: TabRoute
@@ -44,4 +44,3 @@ sealed interface TabRoute: NavKey{
     @Serializable
     data object Profile: TabRoute
 }
-
