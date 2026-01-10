@@ -4,52 +4,35 @@ import com.arathort.growbox.domain.models.analytics.DailyLog
 import com.arathort.growbox.domain.models.analytics.HourlyReading
 
 data class DailyLogDto(
+    val id: String,
 
-    val date: String = "",
+    val device_id: String,
 
-    val hourly_readings: List<HourlyReadingDto> = emptyList(),
+    val date: String,
 
-    val min_temp: Double = 0.0,
+    val hourly_readings: List<HourlyReadingDto>,
 
-    val max_temp: Double = 0.0,
-
-    val min_humidity: Double = 0.0,
-
-    val max_humidity: Double = 0.0,
-
-    val total_power_kwh: Double = 0.0,
-
-    val total_water_ml: Double = 0.0,
-
-    val total_nutrition_mg: Double = 0.0
-
+    val min_temp: Double,
+    val max_temp: Double,
+    val min_humidity: Double,
+    val max_humidity: Double,
+    val total_power_kwh: Double,
+    val total_water_ml: Double,
+    val total_nutrition_mg: Double
 )
 
 data class HourlyReadingDto(
-
-    val timestamp: Long = 0,
-
-    val temp: Double = 0.0,
-
-    val hum: Double = 0.0,
-
-    val light: Double = 0.0,
-
-    val nutrition: Double = 0.0
-
+    val timestamp: Long,
+    val temperature: Double,
+    val humidity: Double,
+    val light: Double,
+    val nutrition: Double
 )
-fun HourlyReadingDto.toDomain(): HourlyReading {
-    return HourlyReading(
-        timestamp = timestamp,
-        temperature = temp,
-        humidity = hum,
-        light = light,
-        nutrition = nutrition
-    )
-}
 
 fun DailyLogDto.toDomain(): DailyLog {
     return DailyLog(
+        id = id,
+        deviceId = device_id,
         date = date,
         hourlyReadings = hourly_readings.map { it.toDomain() },
         minTemp = min_temp,
@@ -59,5 +42,41 @@ fun DailyLogDto.toDomain(): DailyLog {
         totalPowerKwh = total_power_kwh,
         totalWaterMl = total_water_ml,
         totalNutritionMg = total_nutrition_mg
+    )
+}
+
+fun DailyLog.toDto(): DailyLogDto {
+    return DailyLogDto(
+        id = id,
+        device_id = deviceId,
+        date = date,
+        hourly_readings = hourlyReadings.map { it.toDto() },
+        min_temp = minTemp,
+        max_temp = maxTemp,
+        min_humidity = minHumidity,
+        max_humidity = maxHumidity,
+        total_power_kwh = totalPowerKwh,
+        total_water_ml = totalWaterMl,
+        total_nutrition_mg = totalNutritionMg
+    )
+}
+
+fun HourlyReadingDto.toDomain(): HourlyReading {
+    return HourlyReading(
+        timestamp = timestamp,
+        temperature = temperature,
+        humidity = humidity,
+        light = light,
+        nutrition = nutrition
+    )
+}
+
+fun HourlyReading.toDto(): HourlyReadingDto {
+    return HourlyReadingDto(
+        timestamp = timestamp,
+        temperature = temperature,
+        humidity = humidity,
+        light = light,
+        nutrition = nutrition
     )
 }
