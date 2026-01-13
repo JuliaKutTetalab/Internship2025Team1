@@ -42,9 +42,9 @@ fun SettingCardWithToogle(
     name: String,
     valueRange: ClosedFloatingPointRange<Float>,
     unitsOfMeasurement: String,
-    onChange: () -> Unit,
+    onChange: (Float) -> Unit,
     checked: Boolean,
-    onCheckedChange: () -> Unit
+    onCheckedChange: (Boolean) -> Unit
 ) {
     var value by remember { mutableFloatStateOf(value) }
     var checked by remember { mutableStateOf(checked) }
@@ -84,7 +84,7 @@ fun SettingCardWithToogle(
                     checked = checked,
                     onCheckedChange = {
                         checked = it
-                        onCheckedChange()
+                        onCheckedChange(it)
                     },
                     colors = SwitchDefaults.colors(
                         checkedThumbColor = White,
@@ -103,7 +103,7 @@ fun SettingCardWithToogle(
                 onValueChange = { value = it },
                 valueRange = valueRange,
                 unitsOfMeasurement = unitsOfMeasurement,
-                onChangeFinished = onChange
+                onChangeFinished = { onChange(value) }
             )
 
         }

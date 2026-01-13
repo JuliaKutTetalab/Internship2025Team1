@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -48,12 +47,10 @@ fun SettingCardWithList(
     name: String,
     valueRange: ClosedFloatingPointRange<Float>,
     unitsOfMeasurement: String,
-    onChange: () -> Unit,
+    onChange: (Float) -> Unit,
     frequencyIndex: Int,
     onIndexChange: (Int) -> Unit
 ) {
-    var sliderValue by remember { mutableFloatStateOf(value) }
-    var currentFrequencyIndex by remember { mutableIntStateOf(frequencyIndex) }
     var expanded by remember { mutableStateOf(false) }
 
     val frequencyOptions = listOf("Every day", "Every 2 days", "Every 3 days", "Weekly")
@@ -102,7 +99,7 @@ fun SettingCardWithList(
                             ) { expanded = true }
                     ) {
                         Text(
-                            text = frequencyOptions.getOrElse(currentFrequencyIndex) { "" },
+                            text = frequencyOptions.getOrElse(frequencyIndex) { "" },
                             style = Typography.labelMedium,
                             color = Green500
                         )
@@ -127,7 +124,6 @@ fun SettingCardWithList(
                                     )
                                 },
                                 onClick = {
-                                    currentFrequencyIndex = index
                                     onIndexChange(index)
                                     expanded = false
                                 }
@@ -139,11 +135,11 @@ fun SettingCardWithList(
 
 
             CustomGradientSlider(
-                value = sliderValue,
-                onValueChange = { sliderValue = it },
+                value = value,
                 valueRange = valueRange,
                 unitsOfMeasurement = unitsOfMeasurement,
-                onChangeFinished = onChange
+                onChangeFinished = { onChange(value) },
+                onValueChange = {}
             )
         }
     }

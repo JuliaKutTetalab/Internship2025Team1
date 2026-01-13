@@ -3,22 +3,22 @@ package com.arathort.growbox.data.remote.dto.device
 import com.arathort.growbox.domain.models.device.DeviceSettings
 
 data class DeviceSettingsDto(
-    val device_id: String,
+    val device_id: String = "",
 
-    val is_vent_automation_enabled: Boolean,
-    val vent_duration_hours: Double,
+    val is_vent_automation_enabled: Boolean = false,
+    val vent_duration_hours: Double = 0.0,
 
-    val is_light_automation_enabled: Boolean,
-    val light_duration_hours: Double,
+    val is_light_automation_enabled: Boolean = false,
+    val light_duration_hours: Double = 0.0,
 
-    val target_temperature: Double,
-    val target_humidity: Double,
+    val target_temperature: Double = 0.0,
+    val target_humidity: Double = 0.0,
 
-    val nutrition_target_amount: Double,
-    val nutrition_frequency_index: Int,
+    val nutrition_target_amount: Double = 0.0,
+    val nutrition_frequency_index: Int = 0,
 
-    val watering_target_amount: Double,
-    val watering_frequency_index: Int
+    val watering_target_amount: Double = 0.0,
+    val watering_frequency_index: Int = 0
 )
 
 fun DeviceSettingsDto.toDomain(): DeviceSettings {

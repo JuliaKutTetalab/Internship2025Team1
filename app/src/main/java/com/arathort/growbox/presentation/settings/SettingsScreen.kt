@@ -9,6 +9,12 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -29,9 +35,10 @@ import com.arathort.growbox.ui.theme.Typography
 fun SettingsScreen(
     viewModel: SettingsScreenViewModel = hiltViewModel()
 ) {
+    val uiState = viewModel.uiState.collectAsStateWithLifecycle().value
     SettingsPage(
         onEvent = viewModel::onEvent,
-        uiState = viewModel.uiState.collectAsStateWithLifecycle().value
+        uiState = uiState
     )
 }
 
@@ -57,76 +64,92 @@ private fun SettingsPage(onEvent: (SettingsScreenUiEvent) -> Unit, uiState: Sett
 
         Spacer(Modifier.height(Dimensions.mediumLarge))
 
+        var sliderValueVent by remember { mutableFloatStateOf(uiState.deviceSettings.ventDurationHours.toFloat()) }
+        var switchValueVent by remember { mutableStateOf(uiState.deviceSettings.isVentAutomationEnabled) }
+
         SettingCardWithToogle(
-            value = uiState.deviceSettings.ventDurationHours.toFloat(),
+            value = sliderValueVent,
             icon = R.drawable.ic_vent,
             name = stringResource(R.string.vent),
             valueRange = 1f..24f,
             unitsOfMeasurement = "h",
-            onChange = {},
-            checked = uiState.deviceSettings.isVentAutomationEnabled,
-            onCheckedChange = {},
+            onChange = { onEvent(SettingsScreenUiEvent.OnVentChange(it.toDouble())) },
+            checked = switchValueVent,
+            onCheckedChange = { onEvent(SettingsScreenUiEvent.TurnVent(it)) },
         )
 
         Spacer(Modifier.height(Dimensions.medium))
 
+        var sliderValueLight by remember { mutableFloatStateOf(uiState.deviceSettings.lightDurationHours.toFloat()) }
+        var switchValueLight by remember { mutableStateOf(uiState.deviceSettings.isLightAutomationEnabled) }
+
         SettingCardWithToogle(
-            value = uiState.deviceSettings.lightDurationHours.toFloat(),
+            value = sliderValueLight,
             icon = R.drawable.ic_light,
             name = stringResource(R.string.light),
             valueRange = 1f..16f,
             unitsOfMeasurement = "h",
-            onChange = {},
-            checked = uiState.deviceSettings.isLightAutomationEnabled,
-            onCheckedChange = {},
+            onChange = { onEvent(SettingsScreenUiEvent.OnLighteningChange(it.toDouble())) },
+            checked = switchValueLight,
+            onCheckedChange = { onEvent(SettingsScreenUiEvent.TurnLightening(it)) },
         )
 
         Spacer(Modifier.height(Dimensions.medium))
 
+        var sliderValueTemperature by remember { mutableFloatStateOf(uiState.deviceSettings.targetTemperature.toFloat()) }
+
         SettingCard(
-            value = uiState.deviceSettings.targetTemperature.toFloat(),
+            value = sliderValueTemperature,
             icon = R.drawable.ic_temperature,
             name = stringResource(R.string.temperature),
             valueRange = 10f..36f,
             unitsOfMeasurement = "`C",
-            onChange = {},
+            onChange = { onEvent(SettingsScreenUiEvent.OnTemperatureChange(it.toDouble())) },
         )
 
         Spacer(Modifier.height(Dimensions.medium))
 
+        var sliderValueHumidity by remember { mutableFloatStateOf(uiState.deviceSettings.targetHumidity.toFloat()) }
+
         SettingCard(
-            value = uiState.deviceSettings.targetHumidity.toFloat(),
+            value = sliderValueHumidity,
             icon = R.drawable.ic_humidity,
             name = stringResource(R.string.humidity),
             valueRange = 0f..100f,
             unitsOfMeasurement = "%",
-            onChange = {},
+            onChange = { onEvent(SettingsScreenUiEvent.OnHumidityChange(it.toDouble())) },
         )
 
         Spacer(Modifier.height(Dimensions.medium))
 
+        var sliderValueNutrition by remember { mutableFloatStateOf(uiState.deviceSettings.nutritionTargetAmount.toFloat()) }
+        var currentFrequencyIndexNutrition by remember { mutableIntStateOf(uiState.deviceSettings.nutritionFrequencyIndex) }
+
         SettingCardWithList(
-            value = uiState.deviceSettings.nutritionTargetAmount.toFloat(),
+            value = sliderValueNutrition,
             icon = R.drawable.ic_nutrion,
             name = stringResource(R.string.nutrition),
             valueRange = 0f..500f,
             unitsOfMeasurement = "mg",
-            onChange = {},
-            frequencyIndex = uiState.deviceSettings.nutritionFrequencyIndex,
-            onIndexChange = {},
+            onChange = { onEvent(SettingsScreenUiEvent.OnNutritionChange(it.toDouble())) },
+            frequencyIndex = currentFrequencyIndexNutrition,
+            onIndexChange = { onEvent(SettingsScreenUiEvent.OnNutritionFrequencyChange(it)) },
         )
 
         Spacer(Modifier.height(Dimensions.medium))
 
+        var sliderValueWatering by remember { mutableFloatStateOf(uiState.deviceSettings.wateringTargetAmount.toFloat()) }
+        var currentFrequencyIndexWatering by remember { mutableIntStateOf(uiState.deviceSettings.wateringFrequencyIndex) }
+
         SettingCardWithList(
-            value = uiState.deviceSettings.wateringTargetAmount.toFloat(),
+            value = sliderValueWatering,
             icon = R.drawable.ic_watering,
             name = stringResource(R.string.watering),
             valueRange = 0f..500f,
             unitsOfMeasurement = "mg",
-            onChange = {},
-            frequencyIndex = uiState.deviceSettings.wateringFrequencyIndex,
-            onIndexChange = {},
+            onChange = { onEvent(SettingsScreenUiEvent.OnWateringChange(it.toDouble())) },
+            frequencyIndex = currentFrequencyIndexWatering,
+            onIndexChange = { onEvent(SettingsScreenUiEvent.OnWateringFrequencyChange(it)) },
         )
 
     }

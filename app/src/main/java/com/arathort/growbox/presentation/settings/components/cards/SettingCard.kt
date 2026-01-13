@@ -22,8 +22,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
-import com.arathort.growbox.R
 import com.arathort.growbox.presentation.common.Dimensions
 import com.arathort.growbox.presentation.settings.components.CustomGradientSlider
 import com.arathort.growbox.ui.theme.Green800
@@ -37,7 +35,7 @@ fun SettingCard(
     name: String,
     valueRange: ClosedFloatingPointRange<Float>,
     unitsOfMeasurement: String,
-    onChange: ()-> Unit
+    onChange: (Float) -> Unit
 ) {
     Card(
         modifier = Modifier
@@ -76,7 +74,7 @@ fun SettingCard(
                 onValueChange = { value = it },
                 valueRange = valueRange,
                 unitsOfMeasurement = unitsOfMeasurement,
-                onChangeFinished = onChange
+                onChangeFinished = { onChange(value) }
             )
 
         }
