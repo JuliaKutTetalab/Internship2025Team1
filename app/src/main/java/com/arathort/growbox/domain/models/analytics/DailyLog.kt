@@ -1,6 +1,8 @@
 package com.arathort.growbox.domain.models.analytics
 
 data class DailyLog(
+    val id: String,
+    val deviceId: String,
     val date: String,
     val hourlyReadings: List<HourlyReading>,
     val minTemp: Double,

@@ -4,46 +4,66 @@ import com.arathort.growbox.domain.models.analytics.DailySummary
 import com.arathort.growbox.domain.models.analytics.MonthlyLog
 
 data class MonthlyLogDto(
+    val id: String,
 
-    val month_id: String = "",
+    val device_id: String,
 
-    val daily_summaries: List<DailySummaryDto> = emptyList(),
+    val month_id: String,
 
-    val min_temp_month: Double = 0.0,
+    val daily_summaries: List<DailySummaryDto>,
 
-    val max_temp_month: Double = 0.0,
-
-    val avg_humidity_month: Double = 0.0,
-
-    val max_light_month: Double = 0.0,
-
-    val total_power_month_kwh: Double = 0.0,
-
-    val total_water_month_ml: Double = 0.0,
-
-    val total_nutrition_month_mg: Double = 0.0
-
+    val min_temp: Double,
+    val max_temp: Double,
+    val avg_humidity: Double,
+    val max_light: Double,
+    val total_power_kwh: Double,
+    val total_water_ml: Double,
+    val total_nutrition_mg: Double
 )
 
 data class DailySummaryDto(
-
-    val date: String = "",
-
-    val day_of_month: Int = 0,
-
-    val avg_temp: Double = 0.0,
-
-    val avg_humidity: Double = 0.0,
-
-    val avg_light: Double = 0.0,
-
-    val avg_nutrition: Double = 0.0,
-
-    val daily_power_kwh: Double = 0.0,
-
-    val daily_water_ml: Double = 0.0
-
+    val date: String,
+    val day_of_month: Int,
+    val avg_temp: Double,
+    val avg_humidity: Double,
+    val avg_light: Double,
+    val avg_nutrition: Double,
+    val daily_power_kwh: Double,
+    val daily_water_ml: Double
 )
+
+fun MonthlyLogDto.toDomain(): MonthlyLog {
+    return MonthlyLog(
+        id = id,
+        deviceId = device_id,
+        monthId = month_id,
+        dailySummaries = daily_summaries.map { it.toDomain() },
+        minTemp = min_temp,
+        maxTemp = max_temp,
+        avgHumidity = avg_humidity,
+        maxLight = max_light,
+        totalPowerKwh = total_power_kwh,
+        totalWaterMl = total_water_ml,
+        totalNutritionMg = total_nutrition_mg
+    )
+}
+
+fun MonthlyLog.toDto(): MonthlyLogDto {
+    return MonthlyLogDto(
+        id = id,
+        device_id = deviceId,
+        month_id = monthId,
+        daily_summaries = dailySummaries.map { it.toDto() },
+        min_temp = minTemp,
+        max_temp = maxTemp,
+        avg_humidity = avgHumidity,
+        max_light = maxLight,
+        total_power_kwh = totalPowerKwh,
+        total_water_ml = totalWaterMl,
+        total_nutrition_mg = totalNutritionMg
+    )
+}
+
 fun DailySummaryDto.toDomain(): DailySummary {
     return DailySummary(
         date = date,
@@ -57,16 +77,15 @@ fun DailySummaryDto.toDomain(): DailySummary {
     )
 }
 
-fun MonthlyLogDto.toDomain(): MonthlyLog {
-    return MonthlyLog(
-        monthId = month_id,
-        dailySummaries = daily_summaries.map { it.toDomain() },
-        minTemp = min_temp_month,
-        maxTemp = max_temp_month,
-        avgHumidity = avg_humidity_month,
-        maxLight = max_light_month,
-        totalPowerKwh = total_power_month_kwh,
-        totalWaterMl = total_water_month_ml,
-        totalNutritionMg = total_nutrition_month_mg
+fun DailySummary.toDto(): DailySummaryDto {
+    return DailySummaryDto(
+        date = date,
+        day_of_month = dayOfMonth,
+        avg_temp = avgTemp,
+        avg_humidity = avgHumidity,
+        avg_light = avgLight,
+        avg_nutrition = avgNutrition,
+        daily_power_kwh = dailyPowerKwh,
+        daily_water_ml = dailyWaterMl
     )
 }

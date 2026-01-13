@@ -3,29 +3,27 @@ package com.arathort.growbox.data.remote.dto.device
 import com.arathort.growbox.domain.models.device.DeviceSettings
 
 data class DeviceSettingsDto(
+    val device_id: String,
 
-    val is_vent_automation_enabled: Boolean = false,
+    val is_vent_automation_enabled: Boolean,
+    val vent_duration_hours: Double,
 
-    val vent_duration_hours: Double = 0.0,
+    val is_light_automation_enabled: Boolean,
+    val light_duration_hours: Double,
 
-    val is_light_automation_enabled: Boolean = false,
-    val light_duration_hours: Double = 0.0,
+    val target_temperature: Double,
+    val target_humidity: Double,
 
-    val target_temperature: Double = 0.0,
+    val nutrition_target_amount: Double,
+    val nutrition_frequency_index: Int,
 
-    val target_humidity: Double = 0.0,
-
-    val nutrition_target_amount: Double = 0.0,
-
-    val nutrition_frequency_index: Int = 0,
-
-    val watering_target_amount: Double = 0.0,
-
-    val watering_frequency_index: Int = 0
-
+    val watering_target_amount: Double,
+    val watering_frequency_index: Int
 )
+
 fun DeviceSettingsDto.toDomain(): DeviceSettings {
     return DeviceSettings(
+        deviceId = device_id,
         isVentAutomationEnabled = is_vent_automation_enabled,
         ventDurationHours = vent_duration_hours,
         isLightAutomationEnabled = is_light_automation_enabled,
@@ -41,6 +39,7 @@ fun DeviceSettingsDto.toDomain(): DeviceSettings {
 
 fun DeviceSettings.toDto(): DeviceSettingsDto {
     return DeviceSettingsDto(
+        device_id = deviceId,
         is_vent_automation_enabled = isVentAutomationEnabled,
         vent_duration_hours = ventDurationHours,
         is_light_automation_enabled = isLightAutomationEnabled,
