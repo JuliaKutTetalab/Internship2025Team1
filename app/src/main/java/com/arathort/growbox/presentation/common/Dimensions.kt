@@ -48,5 +48,7 @@ object Dimensions {
     val lineHeightBody = 22.sp
 
     val cardHeight = 111.dp
+    val mediumCardHeight = 95.dp
     val progressBarHeight = 12.dp
+    val switchHeight = 24.dp
 }
