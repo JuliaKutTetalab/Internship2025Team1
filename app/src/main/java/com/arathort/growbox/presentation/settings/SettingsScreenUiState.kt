@@ -3,7 +3,8 @@ package com.arathort.growbox.presentation.settings
 import com.arathort.growbox.domain.models.device.DeviceSettings
 
 data class SettingsScreenUiState(
-    val deviceSettings: DeviceSettings = defaultSettings
+    val deviceSettings: DeviceSettings = defaultSettings,
+    val isLoading: Boolean = false
 )
 
 val defaultSettings = DeviceSettings(

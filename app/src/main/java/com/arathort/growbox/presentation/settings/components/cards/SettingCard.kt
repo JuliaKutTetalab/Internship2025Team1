@@ -3,9 +3,11 @@ package com.arathort.growbox.presentation.settings.components.cards
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -13,6 +15,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.remember
@@ -37,14 +40,17 @@ fun SettingCard(
     unitsOfMeasurement: String,
     onChange: (Float) -> Unit
 ) {
+    var sliderPosition by remember { mutableFloatStateOf(value) }
+
+    LaunchedEffect(value) {
+        sliderPosition = value
+    }
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .shadow(
-                elevation = Dimensions.micro,
-                shape = RoundedCornerShape(Dimensions.bigRadius),
-                ambientColor = Color.Black.copy(alpha = 0.1f),
-                spotColor = Color.Black.copy(alpha = 0.2f)
+                elevation = Dimensions.small,
+                shape = RoundedCornerShape(Dimensions.mediumRadius),
             )
             .height(Dimensions.mediumCardHeight),
         shape = RoundedCornerShape(Dimensions.mediumRadius),
@@ -62,19 +68,19 @@ fun SettingCard(
                     contentDescription = null,
                     tint = Green800
                 )
+                Spacer(modifier = Modifier.width(Dimensions.micro))
                 Text(
                     text = name, style = Typography.titleLarge,
                 )
             }
 
-            var value by remember { mutableFloatStateOf(value) }
-
             CustomGradientSlider(
-                value = value,
-                onValueChange = { value = it },
+                value = sliderPosition,
+                onValueChange = { sliderPosition = it },
                 valueRange = valueRange,
                 unitsOfMeasurement = unitsOfMeasurement,
-                onChangeFinished = { onChange(value) }
+                onChangeFinished = { onChange(sliderPosition) },
+
             )
 
         }

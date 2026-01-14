@@ -21,10 +21,12 @@ class SettingsScreenViewModel @Inject constructor(
     val uiState: StateFlow<SettingsScreenUiState> = _uiState.asStateFlow()
 
     init {
+        _uiState.update { state -> state.copy(isLoading = true) }
         viewModelScope.launch {
             _uiState.update { state ->
                 state.copy(deviceSettings = getDeviceSettingsUseCase("1") ?: defaultSettings)
             }
+            _uiState.update { state -> state.copy(isLoading = false) }
         }
     }
 

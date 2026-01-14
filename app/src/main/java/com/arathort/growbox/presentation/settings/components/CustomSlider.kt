@@ -39,7 +39,8 @@ fun CustomGradientSlider(
     onValueChange: (Float) -> Unit,
     valueRange: ClosedFloatingPointRange<Float>,
     unitsOfMeasurement: String = "`C",
-    onChangeFinished: () -> Unit
+    onChangeFinished: () -> Unit,
+    enabled: Boolean = true
 ) {
     val interactionSource = remember { MutableInteractionSource() }
 
@@ -57,6 +58,8 @@ fun CustomGradientSlider(
             valueRange = valueRange,
             interactionSource = interactionSource,
             onValueChangeFinished = { onChangeFinished() },
+            enabled = enabled,
+            steps = (valueRange.endInclusive - valueRange.start).toInt(),
             thumb = {
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
@@ -77,7 +80,7 @@ fun CustomGradientSlider(
                     )
                 }
             },
-            track = { sliderState ->
+            track = {
                 Canvas(
                     modifier = Modifier
                         .fillMaxWidth()
