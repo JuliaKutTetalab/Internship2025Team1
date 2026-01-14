@@ -13,6 +13,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Slider
@@ -25,7 +27,7 @@ import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.unit.dp
+import com.arathort.growbox.presentation.common.Dimensions
 import com.arathort.growbox.ui.theme.Green200
 import com.arathort.growbox.ui.theme.Green300
 import com.arathort.growbox.ui.theme.Green500
@@ -44,9 +46,9 @@ fun CustomGradientSlider(
 ) {
     val interactionSource = remember { MutableInteractionSource() }
 
-    val trackHeight = 8.dp
-    val thumbSize = 16.dp
-    val textOffset = 32.dp
+    val trackHeight = Dimensions.micro
+    val thumbSize = Dimensions.medium
+    val textOffset = Dimensions.large
 
     Box(
         modifier = Modifier.fillMaxWidth(),
@@ -59,24 +61,28 @@ fun CustomGradientSlider(
             interactionSource = interactionSource,
             onValueChangeFinished = { onChangeFinished() },
             enabled = enabled,
-            steps = (valueRange.endInclusive - valueRange.start).toInt(),
+            steps = (valueRange.endInclusive - valueRange.start).toInt() - 1,
             thumb = {
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
-                    modifier = Modifier.offset(y = 10.dp)
+                    modifier = Modifier
+                        .offset(y = Dimensions.thumbOffset)
+                        .width(thumbSize)
+                        .wrapContentWidth(unbounded = true)
                 ) {
                     Box(
                         modifier = Modifier
                             .size(thumbSize)
                             .background(Color.White, CircleShape)
-                            .border(2.dp, Green800, CircleShape)
+                            .border(Dimensions.nano, Green800, CircleShape)
                     )
 
                     Text(
                         text = "${value.toInt()}$unitsOfMeasurement",
                         style = Typography.labelMedium,
                         color = Green300,
-                        modifier = Modifier.padding(top = 4.dp)
+                        modifier = Modifier.padding(top = Dimensions.superMicro),
+                        maxLines = 1
                     )
                 }
             },
@@ -101,19 +107,21 @@ fun CustomGradientSlider(
                     drawRoundRect(
                         brush = Brush.verticalGradient(
                             colors = listOf(Green500, Green800),
+                            startY = 0f,
+                            endY = activeWidth
                         ),
                         size = Size(width = activeWidth, height = size.height),
                         cornerRadius = cornerRadius
                     )
                 }
             },
-            modifier = Modifier.height(thumbSize + textOffset + 20.dp)
+            modifier = Modifier.height(thumbSize + textOffset + Dimensions.mediumOffset)
         )
 
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .offset(y = 2.dp),
+                .offset(y = Dimensions.nano),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Text(

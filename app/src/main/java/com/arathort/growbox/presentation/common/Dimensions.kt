@@ -5,6 +5,8 @@ import androidx.compose.ui.unit.sp
 
 object Dimensions {
     //paddings
+    val nano = 2.dp
+    val superMicro = 4.dp
     val micro = 8.dp
     val small = 12.dp
 
@@ -51,4 +53,6 @@ object Dimensions {
     val mediumCardHeight = 95.dp
     val progressBarHeight = 12.dp
     val switchHeight = 24.dp
+    val thumbOffset = 10.dp
+    val mediumOffset = 20.dp
 }
