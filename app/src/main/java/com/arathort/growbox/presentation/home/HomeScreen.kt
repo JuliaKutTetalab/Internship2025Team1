@@ -1,9 +1,15 @@
 package com.arathort.growbox.presentation.home
 
 import android.content.res.Configuration
+import android.widget.Toast
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
@@ -12,11 +18,14 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
@@ -25,6 +34,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation3.runtime.NavBackStack
@@ -44,22 +54,54 @@ fun HomeScreen(
 ) {
 
     val uiState by homeViewModel.uiState.collectAsStateWithLifecycle()
+    val context = LocalContext.current
 
     LaunchedEffect(Unit) {
         homeViewModel.effect.collect { effect ->
             when (effect) {
                 is HomeUiEffect.NavigateToDetail -> onNavigateToDetail(effect.route)
+                is HomeUiEffect.ShowToast -> {
+                    Toast.makeText(context, "Failed to connect", Toast.LENGTH_SHORT).show()
+                }
             }
         }
     }
 
-    HomePage(uiState, onVentChanged = { isEnabled ->
-        homeViewModel.onEvent(HomeUiEvent.onVentToggle(isEnabled))
-    }, onWateringChanged = { isEnabled ->
-        homeViewModel.onEvent(HomeUiEvent.onWateringToggle(isEnabled))
-    }, onSensorClick = { sensorType ->
-        homeViewModel.onEvent(HomeUiEvent.onSensorDetailClick(sensorType))
-    })
+    Box(modifier = Modifier.fillMaxSize()) {
+
+        HomePage(
+            uiState = uiState,
+            onVentChanged = { homeViewModel.onEvent(HomeUiEvent.onVentToggle(it)) },
+            onWateringChanged = { homeViewModel.onEvent(HomeUiEvent.onWateringToggle(it)) },
+            onSensorClick = { homeViewModel.onEvent(HomeUiEvent.onSensorDetailClick(it)) }
+        )
+
+        AnimatedVisibility(
+            visible = uiState.isLoading,
+            enter = fadeIn(),
+            exit = fadeOut(),
+            modifier = Modifier.align(Alignment.Center)
+        ) {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(Color.Black.copy(alpha = 0.3f))
+                    .clickable(
+                        interactionSource = remember { MutableInteractionSource() },
+                        indication = null,
+                        onClick = {}
+                    ),
+                contentAlignment = Alignment.Center
+            ) {
+                CircularProgressIndicator(
+                    color = Green500,
+                    strokeWidth = 4.dp,
+                    modifier = Modifier.size(48.dp)
+                )
+            }
+
+        }
+    }
 }
 
 @Composable
@@ -205,15 +247,5 @@ fun HomePage(
         }
 
         Spacer(Modifier.height(Dimensions.xLarge))
-    }
-}
-
-@Preview(
-    name = "Light Mode", showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_NO
-)
-@Composable
-fun HomePagePreview() {
-    GrowBoxTheme {
-
     }
 }

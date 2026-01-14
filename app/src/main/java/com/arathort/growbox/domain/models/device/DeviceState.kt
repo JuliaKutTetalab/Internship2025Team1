@@ -5,11 +5,11 @@ data class DeviceState(
     val ownerId: String,
 
     val activeCropTypeId: String?,
-    val activeCropName: String?,
+    val activeCropName: String,
     val activeCropImageUrl: String?,
 
-    val startDateTimestamp: Long,
-    val estimatedHarvestDays: Int,
+    val startDateTimestamp: Long?,
+    val estimatedHarvestDays: Int?,
     val lastUpdated: Long,
 
     val currentTemperature: Double,

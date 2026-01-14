@@ -11,5 +11,11 @@ interface DeviceRepository {
     suspend fun getDeviceSettings(deviceId: String): DeviceSettings?
 
     suspend fun saveDeviceSettings(settings: DeviceSettings)
+    suspend fun sendDeviceCommand(
+        deviceId: String,
+        isVentEnabled: Boolean? = null,
+        isWateringEnabled: Boolean? = null
+    )
+
 }
 

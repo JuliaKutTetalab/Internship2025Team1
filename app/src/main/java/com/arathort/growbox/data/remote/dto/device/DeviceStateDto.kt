@@ -9,11 +9,11 @@ data class DeviceStateDto(
 
     val active_crop_type_id: String?,
 
-    val active_crop_name: String?,
+    val active_crop_name: String,
     val active_crop_image_url: String?,
 
-    val start_date_timestamp: Long,
-    val estimated_harvest_days: Int,
+    val start_date_timestamp: Long?,
+    val estimated_harvest_days: Int?,
     val last_updated: Long,
 
     val current_temperature: Double,

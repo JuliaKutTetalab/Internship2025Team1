@@ -1,24 +1,29 @@
 package com.arathort.growbox.data.remote.dto.device
 
 import com.arathort.growbox.domain.models.device.DeviceSettings
+import com.google.firebase.firestore.PropertyName
 
 data class DeviceSettingsDto(
-    val device_id: String,
+    val device_id: String = "",
 
-    val is_vent_automation_enabled: Boolean,
-    val vent_duration_hours: Double,
+    @PropertyName("_vent_automation_enabled")
+    val is_vent_automation_enabled: Boolean = false,
 
-    val is_light_automation_enabled: Boolean,
-    val light_duration_hours: Double,
+    val vent_duration_hours: Double = 0.0,
 
-    val target_temperature: Double,
-    val target_humidity: Double,
+    @PropertyName("_light_automation_enabled")
+    val is_light_automation_enabled: Boolean = false,
 
-    val nutrition_target_amount: Double,
-    val nutrition_frequency_index: Int,
+    val light_duration_hours: Double = 0.0,
 
-    val watering_target_amount: Double,
-    val watering_frequency_index: Int
+    val target_temperature: Double = 0.0,
+    val target_humidity: Double = 0.0,
+
+    val nutrition_target_amount: Double = 0.0,
+    val nutrition_frequency_index: Int = 0,
+
+    val watering_target_amount: Double = 0.0,
+    val watering_frequency_index: Int = 0
 )
 
 fun DeviceSettingsDto.toDomain(): DeviceSettings {
