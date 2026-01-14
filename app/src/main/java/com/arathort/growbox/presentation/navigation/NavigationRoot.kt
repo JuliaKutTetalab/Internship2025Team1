@@ -20,7 +20,7 @@ import com.arathort.growbox.presentation.splash.screen.SplashScreen
 
 @Composable
 fun NavigationRoot() {
-    val backStack = rememberNavBackStack(Route.Splash)
+    val backStack = rememberNavBackStack(Route.Dashboard)
 
     NavDisplay(
         backStack = backStack,
@@ -54,7 +54,11 @@ fun NavigationRoot() {
                 )
             }
             entry<Route.Dashboard> {
-                MainScreen()
+                MainScreen(
+                    onNavigateToStatistic = { sensorType ->
+                        backStack.add(Route.Statistic(sensorType))
+                    }
+                )
             }
             entry<Route.DeviceConnection> {
                 DeviceConnectionScreen(
@@ -72,8 +76,10 @@ fun NavigationRoot() {
                 ConnectingScreen(backStack = backStack)
             }
 
-            entry<Route.Statistic> {
-                StatisticScreen()
+            entry<Route.Statistic> { key ->
+                StatisticScreen(
+                    sensorType = key.sensorType,
+                )
             }
 
             entry<Route.CropTypeSelection> {

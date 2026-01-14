@@ -10,12 +10,13 @@ import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
 import androidx.navigation3.ui.NavDisplay
 import com.arathort.growbox.presentation.home.HomeScreen
+import com.arathort.growbox.presentation.home.SensorType
 import com.arathort.growbox.presentation.navigation.TabRoute
 import com.arathort.growbox.presentation.profile.ProfileScreen
 import com.arathort.growbox.presentation.settings.SettingsScreen
 
 @Composable
-fun MainScreen() {
+fun MainScreen(onNavigateToStatistic: (SensorType) -> Unit) {
     val tabStack = rememberNavBackStack(TabRoute.Home)
 
     val currentTab = tabStack.lastOrNull() ?: TabRoute.Home
@@ -41,7 +42,11 @@ fun MainScreen() {
             ),
             entryProvider = { key ->
                 when(key) {
-                    TabRoute.Home -> NavEntry(key) { HomeScreen() }
+                    TabRoute.Home -> NavEntry(key) {
+                        HomeScreen(
+                            onNavigateToDetail = onNavigateToStatistic
+                        )
+                    }
                     TabRoute.Settings -> NavEntry(key) { SettingsScreen() }
                     TabRoute.Profile -> NavEntry(key) { ProfileScreen() }
                     else -> error("Unknown Tab: $key")

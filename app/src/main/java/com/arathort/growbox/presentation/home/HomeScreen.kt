@@ -10,6 +10,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -26,22 +27,38 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation3.runtime.NavBackStack
+import androidx.navigation3.runtime.NavKey
 import com.arathort.growbox.R
 import com.arathort.growbox.presentation.common.Dimensions
 import com.arathort.growbox.presentation.common.card.ControlCard
 import com.arathort.growbox.presentation.home.components.GradientProgressIndicator
 import com.arathort.growbox.presentation.common.card.SensorCard
+import com.arathort.growbox.presentation.navigation.Route
 import com.arathort.growbox.ui.theme.*
 
 @Composable
-fun HomeScreen(homeViewModel: HomeViewModel = hiltViewModel()) {
+fun HomeScreen(
+    homeViewModel: HomeViewModel = hiltViewModel(),
+    onNavigateToDetail: (SensorType) -> Unit
+) {
 
     val uiState by homeViewModel.uiState.collectAsStateWithLifecycle()
+
+    LaunchedEffect(Unit) {
+        homeViewModel.effect.collect { effect ->
+            when (effect) {
+                is HomeUiEffect.NavigateToDetail -> onNavigateToDetail(effect.route)
+            }
+        }
+    }
 
     HomePage(uiState, onVentChanged = { isEnabled ->
         homeViewModel.onEvent(HomeUiEvent.onVentToggle(isEnabled))
     }, onWateringChanged = { isEnabled ->
         homeViewModel.onEvent(HomeUiEvent.onWateringToggle(isEnabled))
+    }, onSensorClick = { sensorType ->
+        homeViewModel.onEvent(HomeUiEvent.onSensorDetailClick(sensorType))
     })
 }
 
@@ -50,6 +67,7 @@ fun HomePage(
     uiState: HomeUiState,
     onVentChanged: (Boolean) -> Unit,
     onWateringChanged: (Boolean) -> Unit,
+    onSensorClick: (SensorType) -> Unit
 ) {
     val scrollState = rememberScrollState()
 
@@ -121,7 +139,8 @@ fun HomePage(
                         R.string.days_days_till_harvest,
                         uiState.totalDays,
                         uiState.daysRemaining
-                    ))
+                    )
+                )
             }, style = Typography.labelMedium, color = MaterialTheme.custom.counterDay
         )
 
@@ -132,7 +151,7 @@ fun HomePage(
                 title = stringResource(R.string.light),
                 value = stringResource(R.string.sensor_value_percent, uiState.lightLevel),
                 iconRes = R.drawable.ic_light,
-                onClick = {},
+                onClick = { onSensorClick(SensorType.LIGHT) },
                 modifier = Modifier.weight(1f)
             )
             Spacer(Modifier.width(Dimensions.medium))
@@ -140,7 +159,7 @@ fun HomePage(
                 title = stringResource(R.string.temperature),
                 value = stringResource(R.string.sensor_value_tempetarure, uiState.temperature),
                 iconRes = R.drawable.ic_temperature,
-                onClick = {},
+                onClick = { onSensorClick(SensorType.TEMPERATURE) },
                 modifier = Modifier.weight(1f)
             )
         }
@@ -150,17 +169,17 @@ fun HomePage(
         Row(modifier = Modifier.fillMaxWidth()) {
             SensorCard(
                 title = stringResource(R.string.humidity),
-                value = stringResource(R.string.sensor_value_percent,uiState.humidity),
+                value = stringResource(R.string.sensor_value_percent, uiState.humidity),
                 iconRes = R.drawable.ic_humidity,
-                onClick = {},
+                onClick = { onSensorClick(SensorType.HUMIDITY) },
                 modifier = Modifier.weight(1f)
             )
             Spacer(Modifier.width(Dimensions.medium))
             SensorCard(
                 title = stringResource(R.string.nutrition),
-                value = stringResource(R.string.sensor_value_percent,uiState.nutritionLevel),
+                value = stringResource(R.string.sensor_value_percent, uiState.nutritionLevel),
                 iconRes = R.drawable.ic_nutrion,
-                onClick = {},
+                onClick = { onSensorClick(SensorType.NUTRITION) },
                 modifier = Modifier.weight(1f)
             )
         }
@@ -195,20 +214,6 @@ fun HomePage(
 @Composable
 fun HomePagePreview() {
     GrowBoxTheme {
-        HomePage(
-            uiState = HomeUiState(
-            isLoading = false,
-            cropName = "Microgreens",
-            daysGrown = 12,
-            totalDays = 21,
-            temperature = 24,
-            humidity = 58,
-            lightLevel = 60,
-            nutritionLevel = 78,
-            isVentOn = true,
-            isWateringOn = true,
-            progress = 0.57f,
-            connectionStatus = ConnectionStatus.CONNECTED
-        ), onVentChanged = {}, onWateringChanged = {})
+
     }
 }
