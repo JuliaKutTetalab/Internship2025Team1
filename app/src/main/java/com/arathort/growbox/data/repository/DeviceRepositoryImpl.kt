@@ -66,4 +66,17 @@ class DeviceRepositoryImpl @Inject constructor(
             .set(dto)
             .await()
     }
+    override suspend fun sendDeviceCommand(deviceId: String, turnVentOn: Boolean?, turnWateringOn: Boolean?) {
+        val updates = mutableMapOf<String, Any>()
+
+        if (turnVentOn != null) updates["is_vent_running"] = turnVentOn
+        if (turnWateringOn != null) updates["is_watering_running"] = turnWateringOn
+
+        if (updates.isNotEmpty()) {
+            firestore.collection("devices")
+                .document(deviceId)
+                .update(updates)
+                .await()
+        }
+    }
 }

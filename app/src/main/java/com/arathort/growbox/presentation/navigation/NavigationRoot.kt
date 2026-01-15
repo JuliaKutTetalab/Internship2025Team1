@@ -9,7 +9,7 @@ import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
 import androidx.navigation3.ui.NavDisplay
 import com.arathort.growbox.presentation.auth.login.LoginScreen
 import com.arathort.growbox.presentation.auth.signup.SignUpScreen
-import com.arathort.growbox.presentation.detailstatistic.StatisticScreen
+import com.arathort.growbox.presentation.chart.ChartScreen
 import com.arathort.growbox.presentation.deviceconnection.DeviceConnectionScreen
 import com.arathort.growbox.presentation.deviceconnection.connecting.ConnectingScreen
 import com.arathort.growbox.presentation.deviceconnection.search.SearchingScreen
@@ -54,7 +54,11 @@ fun NavigationRoot() {
                 )
             }
             entry<Route.Dashboard> {
-                MainScreen()
+                MainScreen(
+                    onNavigateToStatistic = { sensorType ->
+                        backStack.add(Route.Chart(sensorType))
+                    }
+                )
             }
             entry<Route.DeviceConnection> {
                 DeviceConnectionScreen(
@@ -72,8 +76,10 @@ fun NavigationRoot() {
                 ConnectingScreen(backStack = backStack)
             }
 
-            entry<Route.Statistic> {
-                StatisticScreen()
+            entry<Route.Chart> { key ->
+                ChartScreen(
+                    sensorType = key.sensorType,
+                )
             }
 
             entry<Route.CropTypeSelection> {

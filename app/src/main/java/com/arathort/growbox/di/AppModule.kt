@@ -39,4 +39,6 @@ object AuthModule {
     @Provides
     fun provideDeviceRepository(firebaseFirestore: FirebaseFirestore): DeviceRepository =
         DeviceRepositoryImpl(firestore = firebaseFirestore)
+
+
 }
