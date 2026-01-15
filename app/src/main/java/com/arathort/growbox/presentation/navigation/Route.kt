@@ -33,7 +33,7 @@ sealed interface Route : NavKey {
     data object Dashboard : Route
 
     @Serializable
-    data class Statistic(
+    data class Chart(
         val sensorType: SensorType
     ) : Route
 
