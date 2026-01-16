@@ -48,7 +48,7 @@ fun MainScreen(onNavigateToStatistic: (SensorType) -> Unit) {
                         )
                     }
                     TabRoute.Settings -> NavEntry(key) { SettingsScreen() }
-                    TabRoute.Profile -> NavEntry(key) { ProfileScreen() }
+                    TabRoute.Profile -> NavEntry(key) { ProfileScreen(backStack = tabStack) }
                     else -> error("Unknown Tab: $key")
                 }
             }

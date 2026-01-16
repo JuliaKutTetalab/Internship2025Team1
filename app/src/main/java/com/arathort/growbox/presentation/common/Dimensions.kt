@@ -19,6 +19,7 @@ object Dimensions {
     val pagePadding = 24.dp
 
     //images
+    val smallIconSize = 42.dp
     val iconSize = 70.dp
     val mediumIconSize = 79.dp
     val largeIconSize = 142.dp
@@ -50,7 +51,9 @@ object Dimensions {
     val lineHeightBody = 22.sp
 
     val cardHeight = 111.dp
+    val bigCardHeight = 192.dp
     val mediumCardHeight = 95.dp
+    val smallCardHeight = 56.dp
     val progressBarHeight = 12.dp
     val switchHeight = 24.dp
     val thumbOffset = 10.dp
