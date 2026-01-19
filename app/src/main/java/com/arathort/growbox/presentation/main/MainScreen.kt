@@ -5,10 +5,15 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.navigation3.rememberViewModelStoreNavEntryDecorator
-import androidx.navigation3.runtime.NavEntry
+import androidx.navigation3.runtime.NavBackStack
+import androidx.navigation3.runtime.NavKey
+import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
 import androidx.navigation3.ui.NavDisplay
+import com.arathort.growbox.presentation.changeCrop.ChangeCropTypeScreen
+import com.arathort.growbox.presentation.harvest.MyHarvestScreen
+import com.arathort.growbox.presentation.history.HistoryScreen
 import com.arathort.growbox.presentation.home.HomeScreen
 import com.arathort.growbox.presentation.home.SensorType
 import com.arathort.growbox.presentation.navigation.TabRoute
@@ -16,7 +21,7 @@ import com.arathort.growbox.presentation.profile.ProfileScreen
 import com.arathort.growbox.presentation.settings.SettingsScreen
 
 @Composable
-fun MainScreen(onNavigateToStatistic: (SensorType) -> Unit) {
+fun MainScreen(onNavigateToStatistic: (SensorType) -> Unit, backStack: NavBackStack<NavKey>) {
     val tabStack = rememberNavBackStack(TabRoute.Home)
 
     val currentTab = tabStack.lastOrNull() ?: TabRoute.Home
@@ -40,17 +45,34 @@ fun MainScreen(onNavigateToStatistic: (SensorType) -> Unit) {
                 rememberSaveableStateHolderNavEntryDecorator(),
                 rememberViewModelStoreNavEntryDecorator()
             ),
-            entryProvider = { key ->
-                when(key) {
-                    TabRoute.Home -> NavEntry(key) {
-                        HomeScreen(
-                            onNavigateToDetail = onNavigateToStatistic
-                        )
-                    }
-                    TabRoute.Settings -> NavEntry(key) { SettingsScreen() }
-                    TabRoute.Profile -> NavEntry(key) { ProfileScreen(backStack = tabStack) }
-                    else -> error("Unknown Tab: $key")
+            entryProvider = entryProvider {
+
+                entry<TabRoute.Home> {
+                    HomeScreen(
+                        onNavigateToDetail = onNavigateToStatistic
+                    )
                 }
+                entry<TabRoute.Settings> { SettingsScreen() }
+
+                entry<TabRoute.Profile> {
+                    ProfileScreen(
+                        tabStack = tabStack,
+                        backStack = backStack
+                    )
+                }
+
+                entry<TabRoute.ChangeCropType> {
+                    ChangeCropTypeScreen()
+                }
+
+                entry<TabRoute.MyHarvest> {
+                    MyHarvestScreen()
+                }
+
+                entry<TabRoute.HistoricData> {
+                    HistoryScreen()
+                }
+
             }
         )
     }

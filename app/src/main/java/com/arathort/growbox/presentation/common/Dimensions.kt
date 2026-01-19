@@ -58,4 +58,8 @@ object Dimensions {
     val switchHeight = 24.dp
     val thumbOffset = 10.dp
     val mediumOffset = 20.dp
+
+    //Profile  screen
+    val lineHeight = 28.dp
+    val lineWidth  = 1.dp
 }

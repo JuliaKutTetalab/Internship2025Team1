@@ -4,7 +4,7 @@ import com.arathort.growbox.domain.models.device.DeviceState
 import com.arathort.growbox.domain.models.user.UserProfile
 
 data class ProfileScreenUiState(
-    val userProfile: UserProfile = UserProfile(
+    val userProfile: UserProfile? = UserProfile(
         uid = "",
         email = "nick.name@mail.com",
         displayName = "name",

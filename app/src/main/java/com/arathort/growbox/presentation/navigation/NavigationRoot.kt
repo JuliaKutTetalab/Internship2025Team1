@@ -9,14 +9,11 @@ import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
 import androidx.navigation3.ui.NavDisplay
 import com.arathort.growbox.presentation.auth.login.LoginScreen
 import com.arathort.growbox.presentation.auth.signup.SignUpScreen
-import com.arathort.growbox.presentation.changeCrop.ChangeCropTypeScreen
 import com.arathort.growbox.presentation.chart.ChartScreen
 import com.arathort.growbox.presentation.deviceconnection.DeviceConnectionScreen
 import com.arathort.growbox.presentation.deviceconnection.connecting.ConnectingScreen
 import com.arathort.growbox.presentation.deviceconnection.search.SearchingScreen
 import com.arathort.growbox.presentation.deviceconnection.selection.SelectCropTypeScreen
-import com.arathort.growbox.presentation.harvest.MyHarvestScreen
-import com.arathort.growbox.presentation.history.HistoryScreen
 import com.arathort.growbox.presentation.main.MainScreen
 import com.arathort.growbox.presentation.onboarding.OnBoardingScreen
 import com.arathort.growbox.presentation.splash.screen.SplashScreen
@@ -60,7 +57,8 @@ fun NavigationRoot() {
                 MainScreen(
                     onNavigateToStatistic = { sensorType ->
                         backStack.add(Route.Chart(sensorType))
-                    }
+                    },
+                    backStack = backStack
                 )
             }
             entry<Route.DeviceConnection> {
@@ -89,17 +87,7 @@ fun NavigationRoot() {
                 SelectCropTypeScreen(backStack = backStack)
             }
 
-            entry<Route.ChangeCropType> {
-                ChangeCropTypeScreen()
-            }
 
-            entry<Route.MyHarvest> {
-                MyHarvestScreen()
-            }
-
-            entry<Route.HistoricData> {
-                HistoryScreen()
-            }
         }
     )
 }

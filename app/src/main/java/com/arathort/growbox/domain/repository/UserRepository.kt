@@ -4,7 +4,7 @@ import com.arathort.growbox.domain.models.user.HarvestHistoryItem
 import com.arathort.growbox.domain.models.user.UserProfile
 
 interface UserRepository {
-    suspend fun getUserProfile(uid: String): UserProfile?
+    suspend fun getUserProfile(): UserProfile?
 
     suspend fun saveUserProfile(profile: UserProfile)
 

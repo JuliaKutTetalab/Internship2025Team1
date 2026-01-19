@@ -3,14 +3,15 @@ package com.arathort.growbox.data.remote.dto.user
 import com.arathort.growbox.domain.models.user.UserProfile
 
 data class UserProfileDto(
-    val uid: String,
+    val uid: String = "",
 
-    val email: String,
-    val display_name: String,
+    val email: String = "",
+    val display_name: String = "",
 
-    val total_harvests_count: Int,
-    val total_days_active: Int
+    val total_harvests_count: Int = 0,
+    val total_days_active: Int = 0
 )
+
 fun UserProfileDto.toDomain(): UserProfile {
     return UserProfile(
         uid = uid,

@@ -1,6 +1,7 @@
 package com.arathort.growbox.presentation.profile
 
 import androidx.annotation.DrawableRes
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -35,6 +36,7 @@ import com.arathort.growbox.R
 import com.arathort.growbox.presentation.common.Dimensions
 import com.arathort.growbox.presentation.deviceconnection.search.MockGrowBox
 import com.arathort.growbox.presentation.navigation.Route
+import com.arathort.growbox.presentation.navigation.TabRoute
 import com.arathort.growbox.ui.theme.Green500
 import com.arathort.growbox.ui.theme.Green800
 import com.arathort.growbox.ui.theme.GrowBoxTheme
@@ -45,15 +47,18 @@ import com.arathort.growbox.ui.theme.custom
 @Composable
 fun ProfileScreen(
     viewModel: ProfileScreenViewModel = hiltViewModel(),
+    tabStack: NavBackStack<NavKey>,
     backStack: NavBackStack<NavKey>
 ) {
     val uiState = viewModel.uiState.collectAsStateWithLifecycle().value
     ProfilePage(
         uiState,
-        navigateToChangeCropType = { backStack.add(Route.ChangeCropType) },
-        navigateToMyHarvest = { backStack.add(Route.MyHarvest) },
-        navigateToHistoricData = { backStack.add(Route.HistoricData) },
+        navigateToChangeCropType = { tabStack.add(TabRoute.ChangeCropType) },
+        navigateToMyHarvest = { tabStack.add(TabRoute.MyHarvest) },
+        navigateToHistoricData = { tabStack.add(TabRoute.HistoricData) },
         onLogout = {
+            viewModel.logout()
+            backStack.clear()
             backStack.add(Route.Login)
         }
     )
@@ -125,7 +130,7 @@ private fun ProfilePage(
                 Spacer(Modifier.height(Dimensions.superMicro))
 
                 Text(
-                    text = uiState.userProfile.email,
+                    text = uiState.userProfile?.email.toString(),
                     style = Typography.titleSmall,
                     fontWeight = FontWeight.W400
                 )
@@ -134,7 +139,8 @@ private fun ProfilePage(
 
                 Row(
                     modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
                     Column(
                         horizontalAlignment = Alignment.CenterHorizontally
@@ -146,12 +152,22 @@ private fun ProfilePage(
                         Spacer(Modifier.height(Dimensions.superMicro))
 
                         Text(
-                            text = uiState.userProfile.totalHarvestsCount.toString(),
+                            text = uiState.userProfile?.totalHarvestsCount.toString(),
                             style = Typography.bodyMedium,
                             fontWeight = FontWeight.W700,
                             color = Green500
                         )
                     }
+
+                    Spacer(
+                        modifier = Modifier
+                            .height(Dimensions.lineHeight)
+                            .background(color = Green500)
+                            .width(
+                                Dimensions.lineWidth
+                            )
+                    )
+
                     Column(
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
@@ -168,6 +184,15 @@ private fun ProfilePage(
                             color = Green500
                         )
                     }
+                    Spacer(
+                        modifier = Modifier
+                            .height(Dimensions.lineHeight)
+                            .background(color = Green500)
+                            .width(
+                                Dimensions.lineWidth
+                            )
+                    )
+
                     Column(
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
@@ -175,10 +200,10 @@ private fun ProfilePage(
                             text = stringResource(R.string.total_days),
                             style = Typography.labelSmall,
                         )
-                        Spacer(Modifier.width(Dimensions.superMicro))
+                        Spacer(Modifier.height(Dimensions.superMicro))
 
                         Text(
-                            text = uiState.userProfile.totalDaysActive.toString(),
+                            text = uiState.userProfile?.totalDaysActive.toString(),
                             style = Typography.bodyMedium,
                             fontWeight = FontWeight.W700,
                             color = Green500

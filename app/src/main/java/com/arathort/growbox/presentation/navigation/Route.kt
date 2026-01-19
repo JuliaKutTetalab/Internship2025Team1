@@ -37,17 +37,19 @@ sealed interface Route : NavKey {
         val sensorType: SensorType
     ) : Route
 
-    @Serializable
-    data object ChangeCropType : Route
-
-    @Serializable
-    data object MyHarvest : Route
-
-    @Serializable
-    data object HistoricData : Route
-
 }
+
+
 sealed interface TabRoute: NavKey{
+    @Serializable
+    data object ChangeCropType : TabRoute
+
+    @Serializable
+    data object MyHarvest : TabRoute
+
+    @Serializable
+    data object HistoricData : TabRoute
+
     @Serializable
     data object Home: TabRoute
 
