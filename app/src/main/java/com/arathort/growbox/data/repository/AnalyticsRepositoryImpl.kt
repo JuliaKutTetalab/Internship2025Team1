@@ -15,7 +15,49 @@ class AnalyticsRepositoryImpl @Inject constructor(
     private val firestore: FirebaseFirestore
 ) : AnalyticsRepository {
 
-    override suspend fun getDailyLogs(deviceId: String, startDate: String, endDate: String): List<DailyLog> {
+    override suspend fun getTodayLog(deviceId: String): DailyLog? {
+        val today = LocalDate.now().toString()
+
+        return getDailyLogByDate(deviceId, today)
+    }
+
+    override suspend fun getLastWeekLogs(deviceId: String): List<DailyLog> {
+        val today = LocalDate.now()
+        val start = today.minusDays(6)
+
+        return getLogsByRange(deviceId, start.toString(), today.toString())
+    }
+
+    override suspend fun getLastMonthLogs(deviceId: String): List<DailyLog> {
+        val today = LocalDate.now()
+        val start = today.minusDays(30)
+
+        return getLogsByRange(deviceId, start.toString(), today.toString())
+    }
+
+    private suspend fun getDailyLogByDate(deviceId: String, date: String): DailyLog? {
+        return try {
+            firestore.collection("analytics_daily")
+                .whereEqualTo("device_id", deviceId)
+                .whereEqualTo("date", date)
+                .limit(1)
+                .get()
+                .await()
+                .documents
+                .firstOrNull()
+                ?.toObject(DailyLogDto::class.java)
+                ?.toDomain()
+        } catch (e: Exception) {
+            e.printStackTrace()
+            null
+        }
+    }
+
+    private suspend fun getLogsByRange(
+        deviceId: String,
+        startDate: String,
+        endDate: String
+    ): List<DailyLog> {
         return try {
             firestore.collection("analytics_daily")
                 .whereEqualTo("device_id", deviceId)
@@ -28,32 +70,6 @@ class AnalyticsRepositoryImpl @Inject constructor(
                 .sortedBy { it.date }
         } catch (e: Exception) {
             e.printStackTrace()
-            emptyList()
-        }
-    }
-    override suspend fun getLastWeekLogs(deviceId: String): List<DailyLog> {
-
-        val today = LocalDate.now()
-
-        val weekAgo = today.minusDays(7)
-
-        val startDateString = weekAgo.toString()
-        val endDateString = today.toString()
-
-        return getDailyLogs(deviceId, startDateString, endDateString)
-    }
-    override suspend fun getMonthlyLogs(deviceId: String, year: String): List<MonthlyLog> {
-        return try {
-
-            firestore.collection("analytics_monthly")
-                .whereEqualTo("device_id", deviceId)
-                .whereGreaterThanOrEqualTo("month_id", "$year-01")
-                .whereLessThanOrEqualTo("month_id", "$year-12")
-                .get()
-                .await()
-                .documents
-                .mapNotNull { it.toObject(MonthlyLogDto::class.java)?.toDomain() }
-        } catch (e: Exception) {
             emptyList()
         }
     }
