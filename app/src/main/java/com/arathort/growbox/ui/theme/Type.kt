@@ -54,6 +54,12 @@ val Typography = Typography(
         lineHeight = 16.sp,
         color = Grey400
     ),
+    labelSmall = TextStyle(
+        fontFamily = Inter,
+        fontWeight = FontWeight.W400,
+        fontSize = 12.sp,
+        lineHeight = 16.sp,
+    ),
     bodyMedium = TextStyle(
         fontFamily = Inter,
         fontWeight = FontWeight.W500,

@@ -33,7 +33,18 @@ sealed interface Route : NavKey {
 
 
 }
+
+
 sealed interface TabRoute: NavKey{
+    @Serializable
+    data object ChangeCropType : TabRoute
+
+    @Serializable
+    data object MyHarvest : TabRoute
+
+    @Serializable
+    data object HistoricData : TabRoute
+
     @Serializable
     data object Home: TabRoute
 
