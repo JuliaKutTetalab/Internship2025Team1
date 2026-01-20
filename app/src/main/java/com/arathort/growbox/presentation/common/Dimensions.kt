@@ -24,6 +24,7 @@ object Dimensions {
     val largeIconSize = 142.dp
     val textFieldHeight = 48.dp
     val buttonHeight = 48.dp
+    val iconSizeMiddle = 48.dp
     val mediumRadius = 12.dp
     val bigRadius = 16.dp
 

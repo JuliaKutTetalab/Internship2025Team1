@@ -22,6 +22,7 @@ enum class StatisticPeriod(val label: String) {
 }
 
 data class ChartPoint(
-    val label: String,
-    val value: Float
+    val value: Float,
+    val labelTop: String,
+    val labelBottom: String
 )

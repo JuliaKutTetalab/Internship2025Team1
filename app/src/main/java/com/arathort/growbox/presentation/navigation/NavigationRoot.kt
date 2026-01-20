@@ -54,11 +54,7 @@ fun NavigationRoot() {
                 )
             }
             entry<Route.Dashboard> {
-                MainScreen(
-                    onNavigateToStatistic = { sensorType ->
-                        backStack.add(Route.Chart(sensorType))
-                    }
-                )
+                MainScreen()
             }
             entry<Route.DeviceConnection> {
                 DeviceConnectionScreen(
@@ -74,12 +70,6 @@ fun NavigationRoot() {
             }
             entry<Route.Connecting> {
                 ConnectingScreen(backStack = backStack)
-            }
-
-            entry<Route.Chart> { key ->
-                ChartScreen(
-                    sensorType = key.sensorType,
-                )
             }
 
             entry<Route.CropTypeSelection> {
