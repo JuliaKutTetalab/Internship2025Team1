@@ -3,8 +3,10 @@ package com.arathort.growbox.di
 import com.arathort.growbox.data.remote.FirebaseAuthDataSource
 import com.arathort.growbox.data.repository.AuthRepositoryImpl
 import com.arathort.growbox.data.repository.DeviceRepositoryImpl
+import com.arathort.growbox.data.repository.UserRepositoryImpl
 import com.arathort.growbox.domain.repository.AuthRepository
 import com.arathort.growbox.domain.repository.DeviceRepository
+import com.arathort.growbox.domain.repository.UserRepository
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth
@@ -40,5 +42,13 @@ object AuthModule {
     fun provideDeviceRepository(firebaseFirestore: FirebaseFirestore): DeviceRepository =
         DeviceRepositoryImpl(firestore = firebaseFirestore)
 
+    @Provides
+    fun provideUserRepository(
+        firebaseFirestore: FirebaseFirestore,
+        firebaseAuth: FirebaseAuth
+    ): UserRepository =
+        UserRepositoryImpl(
+            firestore = firebaseFirestore, firebaseAuth = firebaseAuth
+        )
 
 }

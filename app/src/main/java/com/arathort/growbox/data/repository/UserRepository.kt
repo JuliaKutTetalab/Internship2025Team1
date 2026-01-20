@@ -1,5 +1,6 @@
 package com.arathort.growbox.data.repository
 
+import android.util.Log
 import com.arathort.growbox.data.remote.dto.user.HarvestHistoryDto
 import com.arathort.growbox.data.remote.dto.user.UserProfileDto
 import com.arathort.growbox.data.remote.dto.user.toDomain
@@ -7,23 +8,27 @@ import com.arathort.growbox.data.remote.dto.user.toDto
 import com.arathort.growbox.domain.models.user.HarvestHistoryItem
 import com.arathort.growbox.domain.models.user.UserProfile
 import com.arathort.growbox.domain.repository.UserRepository
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
 class UserRepositoryImpl @Inject constructor(
-    private val firestore: FirebaseFirestore
+    private val firestore: FirebaseFirestore,
+    private val firebaseAuth: FirebaseAuth
 ) : UserRepository {
 
-    override suspend fun getUserProfile(uid: String): UserProfile? {
+    override suspend fun getUserProfile(): UserProfile? {
         return try {
+            val userId = firebaseAuth.currentUser?.uid ?: return null
             firestore.collection("users")
-                .document(uid)
+                .document(userId)
                 .get()
                 .await()
                 .toObject(UserProfileDto::class.java)
                 ?.toDomain()
         } catch (e: Exception) {
+            Log.e("My tag", e.message.toString())
             null
         }
     }

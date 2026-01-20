@@ -63,5 +63,14 @@
     <string name="unit_kw">kw</string>
     <string name="unit_ml">ml</string>
 
+    <string name="profile">Profile</string>
+    <string name="total_harvest">Total Harvest</string>
+    <string name="my_harvest">My Harvest</string>
+    <string name="crop_type">Crop Type</string>
+    <string name="change_crop_type">Change Crop Type</string>
+    <string name="total_days">Total Days</string>
+    <string name="historic_data">Historic Data</string>
+    <string name="logout">Log Out</string>
+
 
 </resources>
