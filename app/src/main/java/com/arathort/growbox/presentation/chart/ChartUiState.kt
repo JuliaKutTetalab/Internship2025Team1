@@ -10,7 +10,7 @@ data class ChartUiState(
     val selectedPeriod: StatisticPeriod = StatisticPeriod.WEEK,
     val chartData: List<ChartPoint> = emptyList(),
     val statCurrent: String = "",
-    val statRecommended: String = "",
+    var statRecommended: String = "",
     val statPeriodValue: String = "",
     val statTotalValue: String = ""
 )
@@ -22,6 +22,7 @@ enum class StatisticPeriod(val label: String) {
 }
 
 data class ChartPoint(
-    val label: String,
-    val value: Float
+    val value: Float,
+    val labelTop: String,
+    val labelBottom: String
 )

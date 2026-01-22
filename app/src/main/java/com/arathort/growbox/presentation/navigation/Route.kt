@@ -1,7 +1,6 @@
 package com.arathort.growbox.presentation.navigation
 
 import androidx.navigation3.runtime.NavKey
-import com.arathort.growbox.presentation.home.SensorType
 import kotlinx.serialization.Serializable
 
 sealed interface Route : NavKey {
@@ -32,10 +31,6 @@ sealed interface Route : NavKey {
     @Serializable
     data object Dashboard : Route
 
-    @Serializable
-    data class Chart(
-        val sensorType: SensorType
-    ) : Route
 
 }
 
@@ -58,4 +53,8 @@ sealed interface TabRoute: NavKey{
 
     @Serializable
     data object Profile: TabRoute
+    @Serializable
+    data class Chart(
+        val sensorType: String
+    ): TabRoute
 }

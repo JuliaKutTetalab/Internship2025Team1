@@ -12,27 +12,31 @@ import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
 import androidx.navigation3.ui.NavDisplay
 import com.arathort.growbox.presentation.changeCrop.ChangeCropTypeScreen
+import com.arathort.growbox.presentation.chart.ChartScreen
 import com.arathort.growbox.presentation.harvest.MyHarvestScreen
 import com.arathort.growbox.presentation.history.HistoryScreen
 import com.arathort.growbox.presentation.home.HomeScreen
-import com.arathort.growbox.presentation.home.SensorType
 import com.arathort.growbox.presentation.navigation.TabRoute
 import com.arathort.growbox.presentation.profile.ProfileScreen
 import com.arathort.growbox.presentation.settings.SettingsScreen
 
 @Composable
-fun MainScreen(onNavigateToStatistic: (SensorType) -> Unit, backStack: NavBackStack<NavKey>) {
+fun MainScreen(backStack: NavBackStack<NavKey>) {
     val tabStack = rememberNavBackStack(TabRoute.Home)
 
-    val currentTab = tabStack.lastOrNull() ?: TabRoute.Home
+    val currentRoute = tabStack.lastOrNull() ?: TabRoute.Home
+
+    val activeTabForBottomBar = if (currentRoute is TabRoute.Chart) TabRoute.Home else currentRoute
 
     Scaffold(
         bottomBar = {
             GrowBoxBottomBar(
-                currentTab = currentTab as TabRoute,
+                currentTab = activeTabForBottomBar as TabRoute,
                 onNavigate = { newRoute ->
-                    if (currentTab != newRoute) {
-                        tabStack[tabStack.size - 1] = newRoute
+                    if (activeTabForBottomBar != newRoute) {
+                        tabStack.add(newRoute)
+                    } else if (newRoute == TabRoute.Home) {
+                        while (tabStack.size > 1) tabStack.removeAt(tabStack.lastIndex)
                     }
                 }
             )
@@ -49,15 +53,27 @@ fun MainScreen(onNavigateToStatistic: (SensorType) -> Unit, backStack: NavBackSt
 
                 entry<TabRoute.Home> {
                     HomeScreen(
-                        onNavigateToDetail = onNavigateToStatistic
+                        onNavigateToDetail = { sensorType ->
+                            tabStack.add(TabRoute.Chart(sensorType.name))
+                        }
                     )
                 }
+
                 entry<TabRoute.Settings> { SettingsScreen() }
 
                 entry<TabRoute.Profile> {
                     ProfileScreen(
                         tabStack = tabStack,
                         backStack = backStack
+                    )
+                }
+
+                entry<TabRoute.Chart> { key ->
+                    ChartScreen(
+                        sensorTypeName = key.sensorType,
+                        onNavigateBack = {
+                            tabStack.removeAt(tabStack.lastIndex)
+                        }
                     )
                 }
 
@@ -72,7 +88,6 @@ fun MainScreen(onNavigateToStatistic: (SensorType) -> Unit, backStack: NavBackSt
                 entry<TabRoute.HistoricData> {
                     HistoryScreen()
                 }
-
             }
         )
     }

@@ -20,7 +20,7 @@ import com.arathort.growbox.ui.theme.custom
 fun SensorCard(
     title: String,
     value: String,
-    @DrawableRes iconRes: Int,
+    @DrawableRes iconRes: Int?,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -42,13 +42,14 @@ fun SensorCard(
             horizontalAlignment = Alignment.Start,
             verticalArrangement = Arrangement.SpaceBetween
         ) {
-            Icon(
-                painter = painterResource(id = iconRes),
-                contentDescription = stringResource(R.string.icon, title),
-                modifier = Modifier.size(Dimensions.standardIconSize),
-                tint = MaterialTheme.custom.sensorIcon
-            )
-
+            if (iconRes != null && iconRes != 0) {
+                Icon(
+                    painter = painterResource(id = iconRes),
+                    contentDescription = stringResource(R.string.icon, title),
+                    modifier = Modifier.size(Dimensions.standardIconSize),
+                    tint = MaterialTheme.custom.sensorIcon
+                )
+            }
             Column {
                 Text(
                     text = value,
