@@ -14,6 +14,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -39,10 +40,15 @@ fun SelectCropTypeScreen(
     viewModel: SelectCropTypeViewModel = hiltViewModel()
 ) {
     val uiState = viewModel.uiState.collectAsStateWithLifecycle().value
+    LaunchedEffect(uiState.isSuccess) {
+        if(uiState.isSuccess){
+            backStack.clear()
+            backStack.add(Route.Dashboard)
+        }
+    }
     SelectCropTypePage(
         uiState = uiState,
         onBackClick = { backStack.remove(Route.CropTypeSelection) },
-        onStartClick = { backStack.add(Route.Dashboard) },
         onEvent = viewModel::onEvent
     )
 }
@@ -51,7 +57,6 @@ fun SelectCropTypeScreen(
 private fun SelectCropTypePage(
     uiState: SelectCropTypeUiState,
     onBackClick: () -> Unit,
-    onStartClick: () -> Unit,
     onEvent: (SelectCropUiEvent) -> Unit
 ) {
     Scaffold { innerPadding ->
@@ -116,7 +121,7 @@ private fun SelectCropTypePage(
                 Column {
                     GradientButton(
                         text = stringResource(R.string.selection_button_text),
-                        onClick = { onStartClick() }
+                        onClick = { onEvent(SelectCropUiEvent.SaveDevice) }
                     )
                     Spacer(Modifier.height(Dimensions.large))
                 }
@@ -132,7 +137,6 @@ private fun SelectCropTypePagePreview() {
         SelectCropTypePage(
             uiState = SelectCropTypeUiState(),
             onBackClick = {},
-            onStartClick = {},
             onEvent = {})
     }
 }

@@ -8,8 +8,6 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.windowInsetsEndWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -26,6 +24,7 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.arathort.growbox.domain.models.library.CropType
 import com.arathort.growbox.presentation.common.Dimensions
 import com.arathort.growbox.ui.theme.Green800
 import com.arathort.growbox.ui.theme.Typography
@@ -33,9 +32,9 @@ import com.arathort.growbox.ui.theme.Typography
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun CropWheelPicker(
-    items: List<String>,
+    items: List<CropType>,
     initialIndex: Int = 2,
-    onSelectionChanged: (String) -> Unit
+    onSelectionChanged: (CropType) -> Unit
 ) {
     val itemHeight = 40.dp
     val visibleItemsCount = 5
@@ -85,7 +84,7 @@ fun CropWheelPicker(
                 val opacity by remember {
                     derivedStateOf {
                         val currentItemInfo = listState.layoutInfo.visibleItemsInfo
-                            .find { it.index-1 == index }
+                            .find { it.index - 1 == index }
 
                         if (currentItemInfo != null) {
                             val viewportCenter = listState.layoutInfo.viewportEndOffset / 2
@@ -112,7 +111,7 @@ fun CropWheelPicker(
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
-                        text = item,
+                        text = item.name,
                         style = Typography.headlineSmall,
                         color = Green800,
                         textAlign = TextAlign.Center,

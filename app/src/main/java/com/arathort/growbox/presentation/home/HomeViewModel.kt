@@ -41,7 +41,7 @@ class HomeViewModel @Inject constructor(
             _uiState.update { it.copy(isLoading = true) }
 
             try {
-                val deviceState = getDeviceStateUseCase(deviceId) ?: defaultState
+                val deviceState = getDeviceStateUseCase().getOrNull()
 
                 if (deviceState != null) {
                     val now = System.currentTimeMillis()
