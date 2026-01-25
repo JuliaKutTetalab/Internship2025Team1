@@ -47,6 +47,12 @@ fun SplashScreen(
                     backStack.add(Route.DeviceConnection)
                     backStack.remove(Route.Splash)
                 }
+
+                SplashEffect.NavigateToOnBoarding -> {
+                    backStack.add(Route.Onboarding)
+                    backStack.remove(Route.Splash)
+
+                }
             }
         }
     }

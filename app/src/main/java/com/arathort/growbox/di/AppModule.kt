@@ -1,5 +1,7 @@
 package com.arathort.growbox.di
 
+import android.app.Application
+import com.arathort.growbox.data.providers.UserProvider
 import com.arathort.growbox.data.remote.FirebaseAuthDataSource
 import com.arathort.growbox.data.repository.AnalyticsRepositoryImpl
 import com.arathort.growbox.data.repository.AuthRepositoryImpl
@@ -38,8 +40,16 @@ object AuthModule {
         FirebaseAuthDataSource(auth)
 
     @Provides
-    fun provideAuthRepository(dataSource: FirebaseAuthDataSource): AuthRepository =
-        AuthRepositoryImpl(dataSource)
+    fun provideUserProvider(application: Application): UserProvider {
+        return UserProvider(application)
+    }
+
+    @Provides
+    fun provideAuthRepository(
+        dataSource: FirebaseAuthDataSource,
+        userProvider: UserProvider
+    ): AuthRepository =
+        AuthRepositoryImpl(dataSource, userProvider = userProvider)
 
 
     @Provides

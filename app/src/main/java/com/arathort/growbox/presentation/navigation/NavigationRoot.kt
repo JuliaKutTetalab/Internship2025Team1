@@ -34,6 +34,10 @@ fun NavigationRoot() {
                     onNavigateToConnection = {
                         backStack.add(Route.DeviceConnection)
                         backStack.remove(Route.Onboarding)
+                    },
+                    onNavigateToHome = {
+                        backStack.add(Route.Dashboard)
+                        backStack.remove(Route.Onboarding)
                     }
                 )
             }
