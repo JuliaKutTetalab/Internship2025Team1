@@ -4,10 +4,12 @@ import com.arathort.growbox.data.remote.FirebaseAuthDataSource
 import com.arathort.growbox.data.repository.AnalyticsRepositoryImpl
 import com.arathort.growbox.data.repository.AuthRepositoryImpl
 import com.arathort.growbox.data.repository.DeviceRepositoryImpl
+import com.arathort.growbox.data.repository.LibraryRepositoryImpl
 import com.arathort.growbox.data.repository.UserRepositoryImpl
 import com.arathort.growbox.domain.repository.AnalyticsRepository
 import com.arathort.growbox.domain.repository.AuthRepository
 import com.arathort.growbox.domain.repository.DeviceRepository
+import com.arathort.growbox.domain.repository.LibraryRepository
 import com.arathort.growbox.domain.repository.UserRepository
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
@@ -41,8 +43,11 @@ object AuthModule {
 
 
     @Provides
-    fun provideDeviceRepository(firebaseFirestore: FirebaseFirestore): DeviceRepository =
-        DeviceRepositoryImpl(firestore = firebaseFirestore)
+    fun provideDeviceRepository(
+        firebaseFirestore: FirebaseFirestore,
+        firebaseAuth: FirebaseAuth
+    ): DeviceRepository =
+        DeviceRepositoryImpl(firestore = firebaseFirestore, firebaseAuth = firebaseAuth)
 
     @Provides
     fun provideAnalyticsRepository(firebaseFirestore: FirebaseFirestore): AnalyticsRepository =
@@ -56,5 +61,9 @@ object AuthModule {
         UserRepositoryImpl(
             firestore = firebaseFirestore, firebaseAuth = firebaseAuth
         )
+
+    @Provides
+    fun provideLibraryRepository(firebaseFirestore: FirebaseFirestore): LibraryRepository =
+        LibraryRepositoryImpl(firestore = firebaseFirestore)
 
 }

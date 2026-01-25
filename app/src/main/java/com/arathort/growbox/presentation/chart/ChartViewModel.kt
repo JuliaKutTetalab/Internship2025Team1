@@ -105,7 +105,7 @@ class ChartViewModel @Inject constructor(
             try {
                 val deviseState = getDeviceStateUseCase().getOrNull()
                 deviceId = deviseState?.deviceId ?: return@launch
-                val settings = getDeviceSettingsUseCase(deviceId) ?: defaultSettings
+                val settings = getDeviceSettingsUseCase() ?: defaultSettings
 
                 var currentValueStr = ""
                 var recommendedStr = ""

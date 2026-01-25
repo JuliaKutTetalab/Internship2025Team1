@@ -9,11 +9,10 @@ interface DeviceRepository {
 
     suspend fun getUserDevices(userId: String): List<DeviceState>
 
-    suspend fun getDeviceSettings(deviceId: String): DeviceSettings?
+    suspend fun getDeviceSettings(): DeviceSettings?
 
     suspend fun saveDeviceSettings(settings: DeviceSettings)
     suspend fun sendDeviceCommand(
-        deviceId: String,
         isVentEnabled: Boolean? = null,
         isWateringEnabled: Boolean? = null
     )

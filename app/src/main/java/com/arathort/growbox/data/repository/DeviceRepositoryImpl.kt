@@ -48,10 +48,11 @@ class DeviceRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getDeviceSettings(deviceId: String): DeviceSettings? {
+    override suspend fun getDeviceSettings(): DeviceSettings? {
+        val ownerId = firebaseAuth.uid ?: return null
         val settings = try {
             firestore.collection("device_settings")
-                .document(deviceId)
+                .document("device_$ownerId")
                 .get()
                 .await()
                 .toObject(DeviceSettingsDto::class.java)
@@ -73,18 +74,18 @@ class DeviceRepositoryImpl @Inject constructor(
     }
 
     override suspend fun sendDeviceCommand(
-        deviceId: String,
         turnVentOn: Boolean?,
         turnWateringOn: Boolean?
     ) {
         val updates = mutableMapOf<String, Any>()
+        val ownerId = firebaseAuth.uid ?: return
 
-        if (turnVentOn != null) updates["is_vent_running"] = turnVentOn
-        if (turnWateringOn != null) updates["is_watering_running"] = turnWateringOn
+        if (turnVentOn != null) updates["_vent_running"] = turnVentOn
+        if (turnWateringOn != null) updates["_watering_running"] = turnWateringOn
 
         if (updates.isNotEmpty()) {
             firestore.collection("devices")
-                .document(deviceId)
+                .document("device_$ownerId")
                 .update(updates)
                 .await()
         }
@@ -112,6 +113,23 @@ class DeviceRepositoryImpl @Inject constructor(
         firestore.collection("devices")
             .document(data.device_id)
             .set(data)
+            .await()
+        val deviceSettings = DeviceSettings(
+            deviceId = "device_$ownerId",
+            isLightAutomationEnabled = true,
+            isVentAutomationEnabled = true,
+            ventDurationHours = 12.0,
+            lightDurationHours = 8.0,
+            targetHumidity = 50.0,
+            targetTemperature = 24.0,
+            nutritionTargetAmount = 250.0,
+            wateringTargetAmount = 250.0,
+            wateringFrequencyIndex = 0,
+            nutritionFrequencyIndex = 0
+        ).toDto()
+        firestore.collection("device_settings")
+            .document(deviceSettings.device_id)
+            .set(deviceSettings)
             .await()
         return Result.success(Unit)
     }

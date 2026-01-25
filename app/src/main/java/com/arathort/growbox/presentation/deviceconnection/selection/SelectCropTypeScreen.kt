@@ -109,12 +109,14 @@ private fun SelectCropTypePage(
                         .weight(1f),
                     contentAlignment = Alignment.Center
                 ) {
-                    CropWheelPicker(
-                        items = uiState.cropTypes,
-                        onSelectionChanged = { newItem ->
-                            onEvent(SelectCropUiEvent.OnCropChange(newItem))
-                        }
-                    )
+                    if(uiState.cropTypes.isNotEmpty()){
+                        CropWheelPicker(
+                            items = uiState.cropTypes,
+                            onSelectionChanged = { newItem ->
+                                onEvent(SelectCropUiEvent.OnCropChange(newItem))
+                            }
+                        )
+                    }
                 }
 
 
