@@ -1,10 +1,9 @@
 package com.arathort.growbox.data.repository
 
 import com.arathort.growbox.data.remote.dto.analytics.DailyLogDto
-import com.arathort.growbox.data.remote.dto.analytics.MonthlyLogDto
 import com.arathort.growbox.data.remote.dto.analytics.toDomain
+import com.arathort.growbox.data.repository.common.Collections
 import com.arathort.growbox.domain.models.analytics.DailyLog
-import com.arathort.growbox.domain.models.analytics.MonthlyLog
 import com.arathort.growbox.domain.repository.AnalyticsRepository
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.tasks.await
@@ -37,9 +36,9 @@ class AnalyticsRepositoryImpl @Inject constructor(
 
     private suspend fun getDailyLogByDate(deviceId: String, date: String): DailyLog? {
         return try {
-            firestore.collection("analytics_daily")
-                .whereEqualTo("device_id", deviceId)
-                .whereEqualTo("date", date)
+            firestore.collection(Collections.analytics)
+                .whereEqualTo(Collections.deviceId, deviceId)
+                .whereEqualTo(Collections.date, date)
                 .limit(1)
                 .get()
                 .await()
@@ -59,10 +58,10 @@ class AnalyticsRepositoryImpl @Inject constructor(
         endDate: String
     ): List<DailyLog> {
         return try {
-            firestore.collection("analytics_daily")
-                .whereEqualTo("device_id", deviceId)
-                .whereGreaterThanOrEqualTo("date", startDate)
-                .whereLessThanOrEqualTo("date", endDate)
+            firestore.collection(Collections.analytics)
+                .whereEqualTo(Collections.deviceId, deviceId)
+                .whereGreaterThanOrEqualTo(Collections.date, startDate)
+                .whereLessThanOrEqualTo(Collections.date, endDate)
                 .get()
                 .await()
                 .documents

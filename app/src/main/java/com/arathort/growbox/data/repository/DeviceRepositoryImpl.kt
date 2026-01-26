@@ -5,6 +5,7 @@ import com.arathort.growbox.data.remote.dto.device.DeviceSettingsDto
 import com.arathort.growbox.data.remote.dto.device.DeviceStateDto
 import com.arathort.growbox.data.remote.dto.device.toDomain
 import com.arathort.growbox.data.remote.dto.device.toDto
+import com.arathort.growbox.data.repository.common.Collections
 import com.arathort.growbox.domain.models.device.DeviceSettings
 import com.arathort.growbox.domain.models.device.DeviceState
 import com.arathort.growbox.domain.models.library.CropType
@@ -22,8 +23,8 @@ class DeviceRepositoryImpl @Inject constructor(
     override suspend fun getDeviceState(): Result<DeviceState?> {
         val ownerId = firebaseAuth.uid ?: return Result.failure(exception = NullPointerException())
         return try {
-            val device = firestore.collection("devices")
-                .document("device_$ownerId")
+            val device = firestore.collection(Collections.devices)
+                .document(getDeviceId(ownerId))
                 .get()
                 .await()
                 .toObject(DeviceStateDto::class.java)
@@ -37,8 +38,8 @@ class DeviceRepositoryImpl @Inject constructor(
 
     override suspend fun getUserDevices(userId: String): List<DeviceState> {
         return try {
-            firestore.collection("devices")
-                .whereEqualTo("owner_id", userId)
+            firestore.collection(Collections.devices)
+                .whereEqualTo(Collections.ownerId, userId)
                 .get()
                 .await()
                 .documents
@@ -51,8 +52,8 @@ class DeviceRepositoryImpl @Inject constructor(
     override suspend fun getDeviceSettings(): DeviceSettings? {
         val ownerId = firebaseAuth.uid ?: return null
         val settings = try {
-            firestore.collection("device_settings")
-                .document("device_$ownerId")
+            firestore.collection(Collections.settings)
+                .document(getDeviceId(ownerId))
                 .get()
                 .await()
                 .toObject(DeviceSettingsDto::class.java)
@@ -67,7 +68,7 @@ class DeviceRepositoryImpl @Inject constructor(
 
     override suspend fun saveDeviceSettings(settings: DeviceSettings) {
         val dto = settings.toDto()
-        firestore.collection("device_settings")
+        firestore.collection(Collections.settings)
             .document(settings.deviceId)
             .set(dto)
             .await()
@@ -80,12 +81,12 @@ class DeviceRepositoryImpl @Inject constructor(
         val updates = mutableMapOf<String, Any>()
         val ownerId = firebaseAuth.uid ?: return
 
-        if (turnVentOn != null) updates["_vent_running"] = turnVentOn
-        if (turnWateringOn != null) updates["_watering_running"] = turnWateringOn
+        if (turnVentOn != null) updates[Collections.ventRunning] = turnVentOn
+        if (turnWateringOn != null) updates[Collections.wateringRunning] = turnWateringOn
 
         if (updates.isNotEmpty()) {
-            firestore.collection("devices")
-                .document("device_$ownerId")
+            firestore.collection(Collections.devices)
+                .document(getDeviceId(ownerId))
                 .update(updates)
                 .await()
         }
@@ -94,7 +95,7 @@ class DeviceRepositoryImpl @Inject constructor(
     override suspend fun saveDevice(cropType: CropType): Result<Unit> {
         val ownerId = firebaseAuth.uid ?: return Result.failure(exception = NullPointerException())
         val device = DeviceState(
-            deviceId = "device_$ownerId",
+            deviceId = getDeviceId(ownerId),
             ownerId = ownerId,
             activeCropTypeId = cropType.id,
             activeCropName = cropType.name,
@@ -110,12 +111,12 @@ class DeviceRepositoryImpl @Inject constructor(
             isWateringRunning = false,
         )
         val data = device.toDto()
-        firestore.collection("devices")
+        firestore.collection(Collections.devices)
             .document(data.device_id)
             .set(data)
             .await()
         val deviceSettings = DeviceSettings(
-            deviceId = "device_$ownerId",
+            deviceId = getDeviceId(ownerId),
             isLightAutomationEnabled = true,
             isVentAutomationEnabled = true,
             ventDurationHours = 12.0,
@@ -127,10 +128,14 @@ class DeviceRepositoryImpl @Inject constructor(
             wateringFrequencyIndex = 0,
             nutritionFrequencyIndex = 0
         ).toDto()
-        firestore.collection("device_settings")
+        firestore.collection(Collections.settings)
             .document(deviceSettings.device_id)
             .set(deviceSettings)
             .await()
         return Result.success(Unit)
+    }
+
+    private fun getDeviceId(ownerId: String): String {
+        return Collections.partialId + ownerId
     }
 }
