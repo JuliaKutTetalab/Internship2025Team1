@@ -73,5 +73,9 @@
     <string name="historic_data">Historic Data</string>
     <string name="logout">Log Out</string>
 
+    <string name="harvest_title">My Harvest</string>
+    <string name="harvests">Harvests: </string>
+    <string name="total_days_number">Total Days:  </string>
+    <string name="no_harvests">No Harvests </string>
 
 </resources>

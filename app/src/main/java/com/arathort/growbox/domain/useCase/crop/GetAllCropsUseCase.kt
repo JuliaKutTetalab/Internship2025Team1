@@ -4,7 +4,7 @@ import com.arathort.growbox.domain.models.library.CropType
 import com.arathort.growbox.domain.repository.LibraryRepository
 import javax.inject.Inject
 
-class GetAllCrops @Inject constructor(
+class GetAllCropsUseCase @Inject constructor(
     private val libraryRepository: LibraryRepository
 ) {
     suspend operator fun invoke(): List<CropType> {
