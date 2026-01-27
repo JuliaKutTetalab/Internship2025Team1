@@ -1,28 +1,32 @@
 package com.arathort.growbox.data.remote.dto.device
 
 import com.arathort.growbox.domain.models.device.DeviceState
+import com.google.firebase.firestore.PropertyName
 
 data class DeviceStateDto(
-    val device_id: String,
+    val device_id: String = "",
 
-    val owner_id: String,
+    val owner_id: String = "",
 
-    val active_crop_type_id: String?,
+    val active_crop_type_id: String? = "",
 
-    val active_crop_name: String,
-    val active_crop_image_url: String?,
+    val active_crop_name: String = "",
+    val active_crop_image_url: String? = null,
 
-    val start_date_timestamp: Long?,
-    val estimated_harvest_days: Int?,
-    val last_updated: Long,
+    val start_date_timestamp: Long? = null,
+    val estimated_harvest_days: Int? = null,
+    val last_updated: Long = System.currentTimeMillis(),
 
-    val current_temperature: Double,
-    val current_humidity: Double,
-    val current_light_level: Double,
-    val current_nutrition_level: Double,
+    val current_temperature: Double = 0.0,
+    val current_humidity: Double = 0.0,
+    val current_light_level: Double = 0.0,
+    val current_nutrition_level: Double = 0.0,
 
-    val is_vent_running: Boolean,
-    val is_watering_running: Boolean
+    @PropertyName("_vent_running")
+    val is_vent_running: Boolean = false,
+
+    @PropertyName("_watering_running")
+    val is_watering_running: Boolean = false
 )
 
 fun DeviceStateDto.toDomain(): DeviceState {

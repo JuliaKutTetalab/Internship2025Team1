@@ -8,7 +8,7 @@ import javax.inject.Inject
 class GetDeviceStateUseCase @Inject constructor(
     private val deviceRepository: DeviceRepository
 ) {
-    suspend operator fun invoke(deviceId: String): DeviceState? {
-        return deviceRepository.getDeviceState(deviceId)
+    suspend operator fun invoke(): Result<DeviceState?> {
+        return deviceRepository.getDeviceState()
     }
 }

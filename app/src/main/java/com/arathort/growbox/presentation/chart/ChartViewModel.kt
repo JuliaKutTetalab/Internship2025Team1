@@ -1,6 +1,5 @@
 package com.arathort.growbox.presentation.chart
 
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.arathort.growbox.domain.models.analytics.DailyLog
@@ -11,7 +10,6 @@ import com.arathort.growbox.domain.useCase.analytics.GetWeekLogsUseCase
 import com.arathort.growbox.domain.useCase.device.GetDeviceSettingsUseCase
 import com.arathort.growbox.domain.useCase.device.GetDeviceStateUseCase
 import com.arathort.growbox.presentation.home.SensorType
-import com.arathort.growbox.presentation.home.defaultState
 import com.arathort.growbox.presentation.settings.defaultSettings
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
@@ -43,7 +41,7 @@ class ChartViewModel @Inject constructor(
     val effect = _effect.receiveAsFlow()
 
     private var sensorType: SensorType? = null
-    private val deviceId = "1"
+    private var deviceId = "1"
 
     fun initSensorType(typeName: String) {
         try {
@@ -65,19 +63,23 @@ class ChartViewModel @Inject constructor(
                 _uiState.update { it.copy(selectedPeriod = StatisticPeriod.DAY) }
                 loadGraphData(StatisticPeriod.DAY)
             }
+
             is ChartUiEvent.OnWeekGraphicSelected -> {
                 _uiState.update { it.copy(selectedPeriod = StatisticPeriod.WEEK) }
                 loadGraphData(StatisticPeriod.WEEK)
             }
+
             is ChartUiEvent.OnMonthlyGraphicSelected -> {
                 _uiState.update { it.copy(selectedPeriod = StatisticPeriod.MONTH) }
                 loadGraphData(StatisticPeriod.MONTH)
             }
+
             is ChartUiEvent.OnReturnButtonClick -> {
                 viewModelScope.launch {
                     _effect.send(ChartUiEffect.onNavigateToBack)
                 }
             }
+
             else -> {}
         }
     }
@@ -101,8 +103,9 @@ class ChartViewModel @Inject constructor(
         viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true) }
             try {
-                val settings = getDeviceSettingsUseCase(deviceId) ?: defaultSettings
-                val deviseState = getDeviceStateUseCase(deviceId) ?: defaultState
+                val deviseState = getDeviceStateUseCase().getOrNull()
+                deviceId = deviseState?.deviceId ?: return@launch
+                val settings = getDeviceSettingsUseCase() ?: defaultSettings
 
                 var currentValueStr = ""
                 var recommendedStr = ""
@@ -110,19 +113,24 @@ class ChartViewModel @Inject constructor(
                 when (type) {
                     SensorType.LIGHT -> {
                         currentValueStr = deviseState.currentLightLevel.toString()
-                        recommendedStr = hoursToPercent(settings.lightDurationHours).toInt().toString()
+                        recommendedStr =
+                            hoursToPercent(settings.lightDurationHours).toInt().toString()
                     }
+
                     SensorType.TEMPERATURE -> {
                         currentValueStr = deviseState.currentTemperature.toString()
                         recommendedStr = settings.targetTemperature.toInt().toString()
                     }
+
                     SensorType.HUMIDITY -> {
                         currentValueStr = deviseState.currentHumidity.toString()
                         recommendedStr = settings.targetHumidity.toInt().toString()
                     }
+
                     SensorType.NUTRITION -> {
                         currentValueStr = deviseState.currentNutritionLevel.toString()
-                        recommendedStr = mgToPercent(settings.nutritionTargetAmount).toInt().toString()
+                        recommendedStr =
+                            mgToPercent(settings.nutritionTargetAmount).toInt().toString()
                     }
                 }
                 _uiState.update { state ->
@@ -160,6 +168,7 @@ class ChartViewModel @Inject constructor(
                         points = mapHourlyLogToPoints(log)
                         stats = calculateStats(points)
                     }
+
                     StatisticPeriod.WEEK -> {
                         var logs = getWeekLogsUseCase(deviceId)
 
@@ -170,6 +179,7 @@ class ChartViewModel @Inject constructor(
                         points = mapDailyLogsToPoints(logs, isWeek = true)
                         stats = calculateStats(points)
                     }
+
                     StatisticPeriod.MONTH -> {
                         var logs = getMonthLogsUseCase(deviceId)
 
@@ -235,7 +245,12 @@ class ChartViewModel @Inject constructor(
 
             ChartPoint(
                 value = avgValue.toFloat(),
-                labelTop = if (isWeek) date.format(DateTimeFormatter.ofPattern("EEE", Locale.ENGLISH))
+                labelTop = if (isWeek) date.format(
+                    DateTimeFormatter.ofPattern(
+                        "EEE",
+                        Locale.ENGLISH
+                    )
+                )
                 else date.dayOfMonth.toString(),
                 labelBottom = date.dayOfMonth.toString()
             )

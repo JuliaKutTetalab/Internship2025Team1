@@ -9,7 +9,8 @@ import com.arathort.growbox.presentation.onboarding.components.OnBoardingContent
 @Composable
 fun OnBoardingScreen(
     onBoardingViewModel: OnBoardingScreenViewModel = hiltViewModel(),
-    onNavigateToConnection: () -> Unit
+    onNavigateToConnection: () -> Unit,
+    onNavigateToHome: ()-> Unit
 ) {
 
     LaunchedEffect(true) {
@@ -17,6 +18,10 @@ fun OnBoardingScreen(
             when (effect) {
                 is OnBoardingEffect.NavigateToConnection -> {
                     onNavigateToConnection()
+                }
+
+                OnBoardingEffect.NavigateToHome -> {
+                    onNavigateToHome()
                 }
             }
         }

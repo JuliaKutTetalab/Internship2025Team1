@@ -7,7 +7,7 @@ import javax.inject.Inject
 class GetDeviceSettingsUseCase @Inject constructor(
     private val deviceRepository: DeviceRepository
 ) {
-    suspend operator fun invoke(deviceId: String): DeviceSettings? {
-        return deviceRepository.getDeviceSettings(deviceId)
+    suspend operator fun invoke(): DeviceSettings? {
+        return deviceRepository.getDeviceSettings()
     }
 }

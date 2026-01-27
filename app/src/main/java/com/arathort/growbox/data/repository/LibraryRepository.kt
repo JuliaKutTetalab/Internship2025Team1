@@ -2,6 +2,7 @@ package com.arathort.growbox.data.repository
 
 import com.arathort.growbox.data.remote.dto.library.CropTypeDto
 import com.arathort.growbox.data.remote.dto.library.toDomain
+import com.arathort.growbox.data.repository.common.Collections
 import com.arathort.growbox.domain.models.library.CropType
 import com.arathort.growbox.domain.repository.LibraryRepository
 import com.google.firebase.firestore.FirebaseFirestore
@@ -14,7 +15,7 @@ class LibraryRepositoryImpl @Inject constructor(
 
     override suspend fun getAllCrops(): List<CropType> {
         return try {
-            firestore.collection("library_crops")
+            firestore.collection(Collections.libraryCrops)
                 .get()
                 .await()
                 .documents
@@ -26,7 +27,7 @@ class LibraryRepositoryImpl @Inject constructor(
 
     override suspend fun getCropById(cropId: String): CropType? {
         return try {
-            firestore.collection("library_crops")
+            firestore.collection(Collections.libraryCrops)
                 .document(cropId)
                 .get()
                 .await()

@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.arathort.growbox.domain.useCase.auth.GetUserProfileUseCase
 import com.arathort.growbox.domain.useCase.auth.LogOutUseCase
+import com.arathort.growbox.domain.useCase.device.GetDeviceStateUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -15,7 +16,8 @@ import javax.inject.Inject
 @HiltViewModel
 class ProfileScreenViewModel @Inject constructor(
     private val getUserProfileUseCase: GetUserProfileUseCase,
-    private val logOutUseCase: LogOutUseCase
+    private val logOutUseCase: LogOutUseCase,
+    private val getDeviceStateUseCase: GetDeviceStateUseCase
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(ProfileScreenUiState())
     val uiState: StateFlow<ProfileScreenUiState> = _uiState.asStateFlow()
@@ -24,6 +26,12 @@ class ProfileScreenViewModel @Inject constructor(
         viewModelScope.launch {
             _uiState.update { state ->
                 state.copy(userProfile = getUserProfileUseCase())
+            }
+            val deviceState = getDeviceStateUseCase().getOrNull()
+            if (deviceState != null) {
+                _uiState.update { state ->
+                    state.copy(deviceState = deviceState)
+                }
             }
         }
     }

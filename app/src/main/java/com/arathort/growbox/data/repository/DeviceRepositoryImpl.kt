@@ -5,35 +5,41 @@ import com.arathort.growbox.data.remote.dto.device.DeviceSettingsDto
 import com.arathort.growbox.data.remote.dto.device.DeviceStateDto
 import com.arathort.growbox.data.remote.dto.device.toDomain
 import com.arathort.growbox.data.remote.dto.device.toDto
+import com.arathort.growbox.data.repository.common.Collections
 import com.arathort.growbox.domain.models.device.DeviceSettings
 import com.arathort.growbox.domain.models.device.DeviceState
+import com.arathort.growbox.domain.models.library.CropType
 import com.arathort.growbox.domain.repository.DeviceRepository
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
 class DeviceRepositoryImpl @Inject constructor(
-    private val firestore: FirebaseFirestore
+    private val firestore: FirebaseFirestore,
+    private val firebaseAuth: FirebaseAuth
 ) : DeviceRepository {
 
-    override suspend fun getDeviceState(deviceId: String): DeviceState? {
+    override suspend fun getDeviceState(): Result<DeviceState?> {
+        val ownerId = firebaseAuth.uid ?: return Result.failure(exception = NullPointerException())
         return try {
-            firestore.collection("devices")
-                .document(deviceId)
+            val device = firestore.collection(Collections.devices)
+                .document(getDeviceId(ownerId))
                 .get()
                 .await()
                 .toObject(DeviceStateDto::class.java)
                 ?.toDomain()
+            Result.success(device)
         } catch (e: Exception) {
             e.printStackTrace()
-            null
+            Result.failure(e)
         }
     }
 
     override suspend fun getUserDevices(userId: String): List<DeviceState> {
         return try {
-            firestore.collection("devices")
-                .whereEqualTo("owner_id", userId)
+            firestore.collection(Collections.devices)
+                .whereEqualTo(Collections.ownerId, userId)
                 .get()
                 .await()
                 .documents
@@ -43,10 +49,11 @@ class DeviceRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getDeviceSettings(deviceId: String): DeviceSettings? {
+    override suspend fun getDeviceSettings(): DeviceSettings? {
+        val ownerId = firebaseAuth.uid ?: return null
         val settings = try {
-            firestore.collection("device_settings")
-                .document(deviceId)
+            firestore.collection(Collections.settings)
+                .document(getDeviceId(ownerId))
                 .get()
                 .await()
                 .toObject(DeviceSettingsDto::class.java)
@@ -61,22 +68,74 @@ class DeviceRepositoryImpl @Inject constructor(
 
     override suspend fun saveDeviceSettings(settings: DeviceSettings) {
         val dto = settings.toDto()
-        firestore.collection("device_settings")
+        firestore.collection(Collections.settings)
             .document(settings.deviceId)
             .set(dto)
             .await()
     }
-    override suspend fun sendDeviceCommand(deviceId: String, turnVentOn: Boolean?, turnWateringOn: Boolean?) {
-        val updates = mutableMapOf<String, Any>()
 
-        if (turnVentOn != null) updates["is_vent_running"] = turnVentOn
-        if (turnWateringOn != null) updates["is_watering_running"] = turnWateringOn
+    override suspend fun sendDeviceCommand(
+        turnVentOn: Boolean?,
+        turnWateringOn: Boolean?
+    ) {
+        val updates = mutableMapOf<String, Any>()
+        val ownerId = firebaseAuth.uid ?: return
+
+        if (turnVentOn != null) updates[Collections.ventRunning] = turnVentOn
+        if (turnWateringOn != null) updates[Collections.wateringRunning] = turnWateringOn
 
         if (updates.isNotEmpty()) {
-            firestore.collection("devices")
-                .document(deviceId)
+            firestore.collection(Collections.devices)
+                .document(getDeviceId(ownerId))
                 .update(updates)
                 .await()
         }
+    }
+
+    override suspend fun saveDevice(cropType: CropType): Result<Unit> {
+        val ownerId = firebaseAuth.uid ?: return Result.failure(exception = NullPointerException())
+        val device = DeviceState(
+            deviceId = getDeviceId(ownerId),
+            ownerId = ownerId,
+            activeCropTypeId = cropType.id,
+            activeCropName = cropType.name,
+            activeCropImageUrl = "",
+            startDateTimestamp = System.currentTimeMillis(),
+            estimatedHarvestDays = null,
+            lastUpdated = System.currentTimeMillis(),
+            currentTemperature = 0.0,
+            currentHumidity = 0.0,
+            currentLightLevel = 0.0,
+            currentNutritionLevel = 0.0,
+            isVentRunning = false,
+            isWateringRunning = false,
+        )
+        val data = device.toDto()
+        firestore.collection(Collections.devices)
+            .document(data.device_id)
+            .set(data)
+            .await()
+        val deviceSettings = DeviceSettings(
+            deviceId = getDeviceId(ownerId),
+            isLightAutomationEnabled = true,
+            isVentAutomationEnabled = true,
+            ventDurationHours = 12.0,
+            lightDurationHours = 8.0,
+            targetHumidity = 50.0,
+            targetTemperature = 24.0,
+            nutritionTargetAmount = 250.0,
+            wateringTargetAmount = 250.0,
+            wateringFrequencyIndex = 0,
+            nutritionFrequencyIndex = 0
+        ).toDto()
+        firestore.collection(Collections.settings)
+            .document(deviceSettings.device_id)
+            .set(deviceSettings)
+            .await()
+        return Result.success(Unit)
+    }
+
+    private fun getDeviceId(ownerId: String): String {
+        return Collections.partialId + ownerId
     }
 }

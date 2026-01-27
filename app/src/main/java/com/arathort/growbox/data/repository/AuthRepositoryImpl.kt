@@ -1,11 +1,14 @@
 package com.arathort.growbox.data.repository
 
+import com.arathort.growbox.data.providers.UserProvider
 import com.arathort.growbox.data.remote.FirebaseAuthDataSource
 import com.arathort.growbox.domain.repository.AuthRepository
+import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class AuthRepositoryImpl @Inject constructor(
-    private val firebaseAuthDataSource: FirebaseAuthDataSource
+    private val firebaseAuthDataSource: FirebaseAuthDataSource,
+    private val userProvider: UserProvider
 ) : AuthRepository {
     override suspend fun signIn(
         email: String,
@@ -27,5 +30,13 @@ class AuthRepositoryImpl @Inject constructor(
 
     override suspend fun isUserLoggedIn(): Boolean {
         return firebaseAuthDataSource.isUserLoggedIn()
+    }
+
+    override fun getUserEntry(): Flow<Boolean> {
+        return userProvider.readAppEntry()
+    }
+
+    override suspend fun setUserEntry() {
+        userProvider.saveAppEntry()
     }
 }

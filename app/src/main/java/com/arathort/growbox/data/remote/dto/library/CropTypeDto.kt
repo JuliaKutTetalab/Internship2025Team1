@@ -3,10 +3,10 @@ package com.arathort.growbox.data.remote.dto.library
 import com.arathort.growbox.domain.models.library.CropType
 
 data class CropTypeDto(
-    val id: String,
-    val name: String,
-    val image_url: String,
-    val total_cycle_days: Int,
+    val id: String="",
+    val name: String="",
+    val image_url: String="",
+    val total_cycle_days: Int=0,
 )
 
 fun CropTypeDto.toDomain(): CropType {

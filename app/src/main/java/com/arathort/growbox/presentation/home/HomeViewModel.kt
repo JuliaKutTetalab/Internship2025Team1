@@ -5,10 +5,14 @@ import androidx.lifecycle.viewModelScope
 import com.arathort.growbox.domain.useCase.device.ControlDeviceUseCase
 import com.arathort.growbox.domain.useCase.device.GetDeviceStateUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
@@ -21,8 +25,6 @@ class HomeViewModel @Inject constructor(
 
     private val _effect = Channel<HomeUiEffect>()
     val effect = _effect.receiveAsFlow()
-
-    private val deviceId = "1"
 
     init {
         collectData()
@@ -41,7 +43,7 @@ class HomeViewModel @Inject constructor(
             _uiState.update { it.copy(isLoading = true) }
 
             try {
-                val deviceState = getDeviceStateUseCase(deviceId) ?: defaultState
+                val deviceState = getDeviceStateUseCase().getOrNull()
 
                 if (deviceState != null) {
                     val now = System.currentTimeMillis()
@@ -58,7 +60,7 @@ class HomeViewModel @Inject constructor(
                         state.copy(
                             isLoading = false,
 
-                            cropName = deviceState.activeCropName ,
+                            cropName = deviceState.activeCropName,
                             daysGrown = calculatedDaysGrown,
                             totalDays = deviceState.estimatedHarvestDays ?: 0,
                             progress = calculatedProgress,
@@ -96,7 +98,6 @@ class HomeViewModel @Inject constructor(
 
             try {
                 controlDeviceUseCase(
-                    deviceId = deviceId,
                     turnVentOn = isEnabled
                 )
             } catch (e: Exception) {
@@ -113,7 +114,6 @@ class HomeViewModel @Inject constructor(
 
             try {
                 controlDeviceUseCase(
-                    deviceId = deviceId,
                     turnWateringOn = isEnabled
                 )
             } catch (e: Exception) {

@@ -5,6 +5,7 @@ import com.arathort.growbox.data.remote.dto.user.HarvestHistoryDto
 import com.arathort.growbox.data.remote.dto.user.UserProfileDto
 import com.arathort.growbox.data.remote.dto.user.toDomain
 import com.arathort.growbox.data.remote.dto.user.toDto
+import com.arathort.growbox.data.repository.common.Collections
 import com.arathort.growbox.domain.models.user.HarvestHistoryItem
 import com.arathort.growbox.domain.models.user.UserProfile
 import com.arathort.growbox.domain.repository.UserRepository
@@ -21,7 +22,7 @@ class UserRepositoryImpl @Inject constructor(
     override suspend fun getUserProfile(): UserProfile? {
         return try {
             val userId = firebaseAuth.currentUser?.uid ?: return null
-            firestore.collection("users")
+            firestore.collection(Collections.users)
                 .document(userId)
                 .get()
                 .await()
@@ -35,7 +36,7 @@ class UserRepositoryImpl @Inject constructor(
 
     override suspend fun saveUserProfile(profile: UserProfile) {
         val dto = profile.toDto()
-        firestore.collection("users")
+        firestore.collection(Collections.users)
             .document(profile.uid)
             .set(dto)
             .await()
@@ -43,8 +44,8 @@ class UserRepositoryImpl @Inject constructor(
 
     override suspend fun getHarvestHistory(userId: String): List<HarvestHistoryItem> {
         return try {
-            firestore.collection("harvest_history")
-                .whereEqualTo("user_id", userId)
+            firestore.collection(Collections.history)
+                .whereEqualTo(Collections.userId, userId)
                 .get()
                 .await()
                 .documents
@@ -58,9 +59,9 @@ class UserRepositoryImpl @Inject constructor(
     override suspend fun addHarvestHistoryItem(item: HarvestHistoryItem) {
         val dto = item.toDto()
         val docRef = if (item.id.isEmpty()) {
-            firestore.collection("harvest_history").document()
+            firestore.collection(Collections.history).document()
         } else {
-            firestore.collection("harvest_history").document(item.id)
+            firestore.collection(Collections.history).document(item.id)
         }
         val finalDto = dto.copy(id = docRef.id)
         docRef.set(finalDto).await()

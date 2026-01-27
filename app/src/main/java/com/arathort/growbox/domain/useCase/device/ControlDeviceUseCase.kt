@@ -7,10 +7,9 @@ class ControlDeviceUseCase @Inject constructor(
     private val deviceRepository: DeviceRepository
 ) {
     suspend operator fun invoke(
-        deviceId: String,
         turnVentOn: Boolean? = null,
         turnWateringOn: Boolean? = null
     ) {
-        deviceRepository.sendDeviceCommand(deviceId, turnVentOn, turnWateringOn)
+        deviceRepository.sendDeviceCommand(turnVentOn, turnWateringOn)
     }
 }
