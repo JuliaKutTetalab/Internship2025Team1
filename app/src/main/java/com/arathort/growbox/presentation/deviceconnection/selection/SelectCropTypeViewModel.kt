@@ -2,7 +2,7 @@ package com.arathort.growbox.presentation.deviceconnection.selection
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.arathort.growbox.domain.useCase.crop.GetAllCrops
+import com.arathort.growbox.domain.useCase.crop.GetAllCropsUseCase
 import com.arathort.growbox.domain.useCase.device.SaveDeviceUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -15,7 +15,7 @@ import javax.inject.Inject
 @HiltViewModel
 class SelectCropTypeViewModel @Inject constructor(
     private val saveDeviceUseCase: SaveDeviceUseCase,
-    private val getAllCrops: GetAllCrops
+    private val getAllCropsUseCase: GetAllCropsUseCase
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(SelectCropTypeUiState())
     val uiState: StateFlow<SelectCropTypeUiState> = _uiState.asStateFlow()
@@ -25,7 +25,7 @@ class SelectCropTypeViewModel @Inject constructor(
             state.copy(isLoading = true)
         }
         viewModelScope.launch {
-            val crops = getAllCrops()
+            val crops = getAllCropsUseCase()
             _uiState.update { state ->
                 state.copy(cropTypes = crops, isLoading = false)
             }

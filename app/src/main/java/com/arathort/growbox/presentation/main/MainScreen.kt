@@ -82,7 +82,7 @@ fun MainScreen(backStack: NavBackStack<NavKey>) {
                 }
 
                 entry<TabRoute.MyHarvest> {
-                    MyHarvestScreen()
+                    MyHarvestScreen(onBackClick = { tabStack.remove(TabRoute.MyHarvest) })
                 }
 
                 entry<TabRoute.HistoricData> {
