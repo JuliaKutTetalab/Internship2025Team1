@@ -78,11 +78,14 @@ fun MainScreen(backStack: NavBackStack<NavKey>) {
                 }
 
                 entry<TabRoute.ChangeCropType> {
-                    ChangeCropTypeScreen()
+                    ChangeCropTypeScreen(
+                        onBackClick = { tabStack.removeAt(tabStack.lastIndex) },
+                        onChangeClick = {}
+                    )
                 }
 
                 entry<TabRoute.MyHarvest> {
-                    MyHarvestScreen(onBackClick = { tabStack.remove(TabRoute.MyHarvest) })
+                    MyHarvestScreen(onBackClick = { tabStack.removeAt(tabStack.lastIndex) })
                 }
 
                 entry<TabRoute.HistoricData> {
