@@ -101,7 +101,7 @@ class DeviceRepositoryImpl @Inject constructor(
             activeCropName = cropType.name,
             activeCropImageUrl = "",
             startDateTimestamp = System.currentTimeMillis(),
-            estimatedHarvestDays = null,
+            estimatedHarvestDays = cropType.totalCycleDays,
             lastUpdated = System.currentTimeMillis(),
             currentTemperature = 0.0,
             currentHumidity = 0.0,

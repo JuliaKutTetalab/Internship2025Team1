@@ -16,6 +16,7 @@ import com.arathort.growbox.presentation.chart.ChartScreen
 import com.arathort.growbox.presentation.harvest.MyHarvestScreen
 import com.arathort.growbox.presentation.history.HistoryScreen
 import com.arathort.growbox.presentation.home.HomeScreen
+import com.arathort.growbox.presentation.navigation.Route
 import com.arathort.growbox.presentation.navigation.TabRoute
 import com.arathort.growbox.presentation.profile.ProfileScreen
 import com.arathort.growbox.presentation.settings.SettingsScreen
@@ -80,7 +81,10 @@ fun MainScreen(backStack: NavBackStack<NavKey>) {
                 entry<TabRoute.ChangeCropType> {
                     ChangeCropTypeScreen(
                         onBackClick = { tabStack.removeAt(tabStack.lastIndex) },
-                        onChangeClick = {}
+                        onChangeClick = {
+                            backStack.clear()
+                            backStack.add(Route.CropTypeSelection)
+                        }
                     )
                 }
 

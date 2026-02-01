@@ -5,5 +5,5 @@ import com.arathort.growbox.domain.models.library.CropType
 data class ChangeCropScreenUiState(
     val cropType: CropType? = null,
     val isLoading: Boolean = false,
-    val harvestDays: Int = 0
+    val daysFromPlant: Int = 0
 )
