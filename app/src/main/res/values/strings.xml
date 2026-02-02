@@ -78,4 +78,7 @@
     <string name="total_days_number">Total Days:  </string>
     <string name="no_harvests">No Harvests </string>
 
+    <string name="change_crop_title">Change Crop Type </string>
+    <string name="change_crop_subtitle">You cannot change crop type until you harvest the current crop. </string>
+    <string name="current_crop">Current Crop Type:  </string>
 </resources>
