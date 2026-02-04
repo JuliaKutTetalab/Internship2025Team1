@@ -42,6 +42,8 @@
     <string name="error_invalid_email">Please enter a valid email address.</string>
     <string name="error_password_requirements">Password must be 8+ chars, with letters, numbers, and symbols.</string>
     <string name="error_passwords_different">Passwords are not the same</string>
+    <string name="error_save">Failed to save user profile</string>
+    <string name="error_find_id">User ID not found</string>
     <string name="microgreens_image_description">Microgreens image</string>
     <string name="unknown">Unknown</string>
     <string name="light">Light</string>

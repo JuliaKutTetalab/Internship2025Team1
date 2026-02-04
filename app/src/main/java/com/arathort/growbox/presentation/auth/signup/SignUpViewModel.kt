@@ -146,13 +146,13 @@ class SignUpViewModel @Inject constructor(
                 _uiState.update { state ->
                     state.copy(
                         isLoading = false,
-                        firebaseErrorMessage = "Failed to save user profile"
+                        confirmPasswordError = R.string.error_save
                     )
                 }
             }
         } else {
             _uiState.update { state ->
-                state.copy(isLoading = false, firebaseErrorMessage = "User ID not found")
+                state.copy(isLoading = false, confirmPasswordError = R.string.error_find_id)
             }
         }
     }
