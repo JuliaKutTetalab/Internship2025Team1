@@ -11,4 +11,6 @@ interface UserRepository {
     suspend fun getHarvestHistory(userId: String): List<HarvestHistoryItem>
 
     suspend fun addHarvestHistoryItem(item: HarvestHistoryItem)
+
+    fun getUserId(): String?
 }

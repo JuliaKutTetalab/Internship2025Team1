@@ -66,4 +66,8 @@ class UserRepositoryImpl @Inject constructor(
         val finalDto = dto.copy(id = docRef.id)
         docRef.set(finalDto).await()
     }
+
+    override fun getUserId(): String? {
+        return firebaseAuth.currentUser?.uid
+    }
 }

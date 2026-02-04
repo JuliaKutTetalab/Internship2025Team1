@@ -3,6 +3,9 @@ package com.arathort.growbox.presentation.auth.signup
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.arathort.growbox.R
+import com.arathort.growbox.domain.models.user.UserProfile
+import com.arathort.growbox.domain.useCase.auth.GetUserIdUseCase
+import com.arathort.growbox.domain.useCase.auth.SaveUserUseCase
 import com.arathort.growbox.domain.useCase.auth.SignUpUseCase
 import com.arathort.growbox.presentation.auth.InputValidator
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -15,6 +18,8 @@ import javax.inject.Inject
 @HiltViewModel
 class SignUpViewModel @Inject constructor(
     private val signUpUseCase: SignUpUseCase,
+    private val saveUserUseCase: SaveUserUseCase,
+    private val getUserIdUseCase: GetUserIdUseCase
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(SignUpUiState())
     val uiState: StateFlow<SignUpUiState> = _uiState
@@ -64,7 +69,9 @@ class SignUpViewModel @Inject constructor(
                 _uiState.update { it.copy(isConfirmPasswordVisible = !it.isConfirmPasswordVisible) }
             }
 
-            SignUpUiEvent.OnSignUpClicked -> validateAndSignUp()
+            SignUpUiEvent.OnSignUpClicked -> {
+                validateAndSignUp()
+            }
         }
     }
 
@@ -102,15 +109,50 @@ class SignUpViewModel @Inject constructor(
 
             val result = signUpUseCase(_uiState.value.email, _uiState.value.password)
 
-            _uiState.update {
-                if (result.isSuccess) {
-                    it.copy(isLoading = false, isSuccess = true)
-                } else {
+            if (result.isSuccess) {
+                saveUserToDatabase()
+            } else {
+                _uiState.update {
                     it.copy(
                         isLoading = false,
                         firebaseErrorMessage = result.exceptionOrNull()?.message
                     )
                 }
+            }
+        }
+    }
+
+    private suspend fun saveUserToDatabase() {
+        val id = getUserIdUseCase()
+
+        if (id != null) {
+            val email = _uiState.value.email
+            val displayName = email.substringBefore('@')
+
+            val profile = UserProfile(
+                uid = id,
+                email = email,
+                displayName = displayName,
+                totalDaysActive = 0,
+                totalHarvestsCount = 0
+            )
+
+            try {
+                saveUserUseCase(profile)
+                _uiState.update { state ->
+                    state.copy(isLoading = false, isSuccess = true)
+                }
+            } catch (e: Exception) {
+                _uiState.update { state ->
+                    state.copy(
+                        isLoading = false,
+                        confirmPasswordError = R.string.error_save
+                    )
+                }
+            }
+        } else {
+            _uiState.update { state ->
+                state.copy(isLoading = false, confirmPasswordError = R.string.error_find_id)
             }
         }
     }
