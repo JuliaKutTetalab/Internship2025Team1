@@ -1,12 +1,14 @@
 package com.arathort.growbox.presentation.splash.screen
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -24,6 +26,7 @@ import com.arathort.growbox.presentation.common.Dimensions
 import com.arathort.growbox.presentation.navigation.Route
 import com.arathort.growbox.ui.theme.GrowBoxTheme
 import com.arathort.growbox.ui.theme.Typography
+import com.arathort.growbox.ui.theme.custom
 import kotlinx.coroutines.flow.collectLatest
 
 @Composable
@@ -38,6 +41,7 @@ fun SplashScreen(
                     backStack.add(Route.Dashboard)
                     backStack.remove(Route.Splash)
                 }
+
                 is SplashEffect.NavigateToLogin -> {
                     backStack.add(Route.Login)
                     backStack.remove(Route.Splash)
@@ -63,7 +67,9 @@ fun SplashScreen(
 @Composable
 private fun SplashPage() {
     Column(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier
+            .fillMaxSize()
+            .background(color = MaterialTheme.custom.cardBackground),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {

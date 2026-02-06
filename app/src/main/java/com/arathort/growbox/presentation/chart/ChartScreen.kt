@@ -20,7 +20,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
@@ -86,10 +85,10 @@ fun ChartScreen(
 
         ChartPage(
             uiState = uiState,
-            OnDailyGraphicSelected = { chartViewModel.onEvent(ChartUiEvent.OnDailyGraphicSelected) },
-            OnWeekGraphicSelected = { chartViewModel.onEvent(ChartUiEvent.OnWeekGraphicSelected) },
-            OnMonthlyGraphicSelected = { chartViewModel.onEvent(ChartUiEvent.OnMonthlyGraphicSelected) },
-            OnReturnButtonClick = { chartViewModel.onEvent(ChartUiEvent.OnReturnButtonClick) }
+            onDailyGraphicSelected = { chartViewModel.onEvent(ChartUiEvent.OnDailyGraphicSelected) },
+            onWeekGraphicSelected = { chartViewModel.onEvent(ChartUiEvent.OnWeekGraphicSelected) },
+            onMonthlyGraphicSelected = { chartViewModel.onEvent(ChartUiEvent.OnMonthlyGraphicSelected) },
+            onReturnButtonClick = { chartViewModel.onEvent(ChartUiEvent.OnReturnButtonClick) }
         )
 
         AnimatedVisibility(
@@ -122,15 +121,14 @@ fun ChartScreen(
 @Composable
 fun ChartPage(
     uiState: ChartUiState,
-    OnDailyGraphicSelected: () -> Unit,
-    OnWeekGraphicSelected: () -> Unit,
-    OnMonthlyGraphicSelected: () -> Unit,
-    OnReturnButtonClick: () -> Unit
+    onDailyGraphicSelected: () -> Unit,
+    onWeekGraphicSelected: () -> Unit,
+    onMonthlyGraphicSelected: () -> Unit,
+    onReturnButtonClick: () -> Unit
 ) {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color.White)
             .statusBarsPadding(),
         verticalArrangement = Arrangement.Top
     ) {
@@ -144,13 +142,12 @@ fun ChartPage(
                 modifier = Modifier
                     .size(Dimensions.iconSizeMiddle)
                     .clip(CircleShape)
-                    .clickable(onClick = OnReturnButtonClick),
+                    .clickable(onClick = onReturnButtonClick),
                 contentAlignment = Alignment.CenterStart
             ) {
                 Icon(
                     painter = painterResource(id = R.drawable.ic_arrow_back),
                     contentDescription = "Back",
-                    tint = Color.Black
                 )
             }
 
@@ -160,7 +157,6 @@ fun ChartPage(
                     .weight(1f)
                     .padding(vertical = Dimensions.superMicro),
                 style = Typography.headlineSmall,
-                color = Color.Black,
                 textAlign = TextAlign.Start
             )
         }
@@ -202,9 +198,9 @@ fun ChartPage(
         Spacer(Modifier.height(Dimensions.pagePadding))
         PeriodSelector(
             selectedPeriod = uiState.selectedPeriod,
-            onDaySelected = OnDailyGraphicSelected,
-            onWeekSelected = OnWeekGraphicSelected,
-            onMonthSelected = OnMonthlyGraphicSelected
+            onDaySelected = onDailyGraphicSelected,
+            onWeekSelected = onWeekGraphicSelected,
+            onMonthSelected = onMonthlyGraphicSelected
         )
 
         Spacer(Modifier.height(Dimensions.medium))
@@ -500,10 +496,10 @@ fun PreviewChartPage() {
     MaterialTheme {
         ChartPage(
             uiState = mockState,
-            OnDailyGraphicSelected = {},
-            OnWeekGraphicSelected = {},
-            OnMonthlyGraphicSelected = {},
-            OnReturnButtonClick = {}
+            onDailyGraphicSelected = {},
+            onWeekGraphicSelected = {},
+            onMonthlyGraphicSelected = {},
+            onReturnButtonClick = {}
         )
     }
 }

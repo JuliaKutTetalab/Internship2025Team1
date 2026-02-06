@@ -93,7 +93,7 @@ fun MainScreen(backStack: NavBackStack<NavKey>) {
                 }
 
                 entry<TabRoute.HistoricData> {
-                    HistoryScreen()
+                    HistoryScreen(tabStack)
                 }
             }
         )
