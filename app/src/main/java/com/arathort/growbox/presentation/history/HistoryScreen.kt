@@ -30,6 +30,8 @@ import androidx.navigation3.runtime.NavBackStack
 import androidx.navigation3.runtime.NavKey
 import com.arathort.growbox.R
 import com.arathort.growbox.presentation.common.Dimensions
+import com.arathort.growbox.presentation.home.SensorType
+import com.arathort.growbox.presentation.navigation.TabRoute
 import com.arathort.growbox.ui.theme.Green800
 import com.arathort.growbox.ui.theme.GrowBoxTheme
 import com.arathort.growbox.ui.theme.Typography
@@ -37,11 +39,13 @@ import com.arathort.growbox.ui.theme.custom
 
 @Composable
 fun HistoryScreen(backStack: NavBackStack<NavKey>) {
-    HistoryPage(onBackClick = { backStack.removeAt(backStack.lastIndex) })
+    HistoryPage(
+        onBackClick = { backStack.removeAt(backStack.lastIndex) },
+        onClick = { backStack.add(TabRoute.HistoryChart(it.name)) })
 }
 
 @Composable
-private fun HistoryPage(onBackClick: () -> Unit) {
+private fun HistoryPage(onBackClick: () -> Unit, onClick: (SensorType) -> Unit) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -66,10 +70,22 @@ private fun HistoryPage(onBackClick: () -> Unit) {
         }
 
         val items = listOf(
-            HistoricItemData(R.string.light, R.drawable.ic_light),
-            HistoricItemData(R.string.temperature, R.drawable.ic_temperature),
-            HistoricItemData(R.string.humidity, R.drawable.ic_humidity),
-            HistoricItemData(R.string.nutrition, R.drawable.ic_nutrion)
+            HistoricItemData(R.string.light, R.drawable.ic_light, sensorType = SensorType.LIGHT),
+            HistoricItemData(
+                R.string.temperature,
+                R.drawable.ic_temperature,
+                sensorType = SensorType.TEMPERATURE
+            ),
+            HistoricItemData(
+                R.string.humidity,
+                R.drawable.ic_humidity,
+                sensorType = SensorType.HUMIDITY
+            ),
+            HistoricItemData(
+                R.string.nutrition,
+                R.drawable.ic_nutrion,
+                sensorType = SensorType.NUTRITION
+            )
         )
 
         LazyVerticalGrid(
@@ -79,18 +95,18 @@ private fun HistoryPage(onBackClick: () -> Unit) {
                 HistoricCard(
                     text = stringResource(item.titleRes),
                     icon = item.iconRes,
-
-                    )
+                    onClick = { onClick(item.sensorType) }
+                )
             }
         }
 
     }
 }
 
-data class HistoricItemData(val titleRes: Int, val iconRes: Int)
+data class HistoricItemData(val titleRes: Int, val iconRes: Int, val sensorType: SensorType)
 
 @Composable
-private fun HistoricCard(text: String, @DrawableRes icon: Int) {
+private fun HistoricCard(text: String, @DrawableRes icon: Int, onClick: () -> Unit) {
     Card(
         shape = RoundedCornerShape(Dimensions.mediumRadius),
         modifier = Modifier
@@ -100,7 +116,8 @@ private fun HistoricCard(text: String, @DrawableRes icon: Int) {
                 shape = RoundedCornerShape(Dimensions.mediumRadius),
             ),
         colors = CardDefaults.cardColors()
-            .copy(containerColor = MaterialTheme.custom.cardBackground)
+            .copy(containerColor = MaterialTheme.custom.cardBackground),
+        onClick = onClick
 
     ) {
         Column(
@@ -124,6 +141,6 @@ private fun HistoricCard(text: String, @DrawableRes icon: Int) {
 @Composable
 private fun HistoryPagePreview() {
     GrowBoxTheme {
-        HistoryPage(onBackClick = {})
+        HistoryPage(onBackClick = {}, onClick = {})
     }
 }
