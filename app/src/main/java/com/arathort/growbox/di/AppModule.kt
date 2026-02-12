@@ -3,11 +3,13 @@ package com.arathort.growbox.di
 import android.app.Application
 import com.arathort.growbox.data.providers.UserProvider
 import com.arathort.growbox.data.remote.FirebaseAuthDataSource
+import com.arathort.growbox.data.remote.ble.AndroidBleScanner
 import com.arathort.growbox.data.repository.AnalyticsRepositoryImpl
 import com.arathort.growbox.data.repository.AuthRepositoryImpl
 import com.arathort.growbox.data.repository.DeviceRepositoryImpl
 import com.arathort.growbox.data.repository.LibraryRepositoryImpl
 import com.arathort.growbox.data.repository.UserRepositoryImpl
+import com.arathort.growbox.domain.ble.BleScanner
 import com.arathort.growbox.domain.repository.AnalyticsRepository
 import com.arathort.growbox.domain.repository.AuthRepository
 import com.arathort.growbox.domain.repository.DeviceRepository
@@ -76,4 +78,8 @@ object AuthModule {
     fun provideLibraryRepository(firebaseFirestore: FirebaseFirestore): LibraryRepository =
         LibraryRepositoryImpl(firestore = firebaseFirestore)
 
+    @Provides
+    fun provideBleScanner(application: Application): BleScanner {
+        return AndroidBleScanner(application)
+    }
 }
