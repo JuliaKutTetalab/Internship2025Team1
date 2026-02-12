@@ -57,4 +57,9 @@ sealed interface TabRoute: NavKey{
     data class Chart(
         val sensorType: String
     ): TabRoute
+
+    @Serializable
+    data class HistoryChart(
+        val sensorType: String
+    ): TabRoute
 }

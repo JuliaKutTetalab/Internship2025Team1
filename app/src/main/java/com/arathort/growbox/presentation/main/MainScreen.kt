@@ -15,6 +15,7 @@ import com.arathort.growbox.presentation.changeCrop.ChangeCropTypeScreen
 import com.arathort.growbox.presentation.chart.ChartScreen
 import com.arathort.growbox.presentation.harvest.MyHarvestScreen
 import com.arathort.growbox.presentation.history.HistoryScreen
+import com.arathort.growbox.presentation.history.chart.HistoryChartScreen
 import com.arathort.growbox.presentation.home.HomeScreen
 import com.arathort.growbox.presentation.navigation.Route
 import com.arathort.growbox.presentation.navigation.TabRoute
@@ -93,7 +94,17 @@ fun MainScreen(backStack: NavBackStack<NavKey>) {
                 }
 
                 entry<TabRoute.HistoricData> {
-                    HistoryScreen()
+                    HistoryScreen(tabStack)
+                }
+
+                entry<TabRoute.HistoryChart> { key ->
+                    HistoryChartScreen(
+                        sensorTypeName = key.sensorType,
+                        onNavigateBack = {
+                            tabStack.removeAt(tabStack.lastIndex)
+                        }
+                    )
+
                 }
             }
         )

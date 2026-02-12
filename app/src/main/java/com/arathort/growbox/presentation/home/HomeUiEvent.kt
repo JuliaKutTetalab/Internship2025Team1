@@ -24,13 +24,13 @@ enum class SensorType(
         unit = R.string.unit_percent,
         unitCalculate = R.string.unit_kw
     ),
-    TEMPERATURE(
+    HUMIDITY(
         title = R.string.humidity,
         icon = R.drawable.ic_humidity,
         unit = R.string.unit_percent,
         unitCalculate = R.string.unit_ml
     ),
-    HUMIDITY(
+    TEMPERATURE(
         title = R.string.temperature,
         icon = R.drawable.ic_temperature,
         unit = R.string.unit_celsius,
