@@ -1,10 +1,12 @@
 package com.arathort.growbox.presentation.deviceconnection.search
 
-data class SearchingScreenUiState(
-    val mockGrowBox: MockGrowBox = MockGrowBox(),
-    val isFound: Boolean = false,
-)
+import com.arathort.growbox.domain.models.device.ScannedDevice
 
+data class SearchingScreenUiState(
+    val scannedDevices: List<ScannedDevice> = emptyList(),
+    val isScanning: Boolean = false,
+    val error: String? = null
+)
 data class MockGrowBox(
     val name: String = "Growbox",
     val model: String = "Fantastic Gin-10",
