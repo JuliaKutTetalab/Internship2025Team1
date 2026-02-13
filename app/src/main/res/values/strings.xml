@@ -35,6 +35,8 @@
     <string name="connecting">Connecting...</string>
     <string name="connecting_connected">Connected</string>
     <string name="connecting_next">Next</string>
+    <string name="connecting_bluetooth_required">Bluetooth permissions required</string>
+    <string name="connecting_bluetooth_required2">Bluetooth is required for scanning</string>
 
     <string name="selection_title">Select crop type</string>
     <string name="selection_button_text">Start planting</string>

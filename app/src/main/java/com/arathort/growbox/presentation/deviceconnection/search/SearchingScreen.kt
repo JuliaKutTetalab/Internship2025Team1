@@ -1,6 +1,11 @@
 package com.arathort.growbox.presentation.deviceconnection.search
 
 import android.Manifest
+import android.app.Activity
+import android.bluetooth.BluetoothAdapter
+import android.bluetooth.BluetoothManager
+import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.widget.Toast
@@ -65,6 +70,27 @@ fun SearchingScreen(
     val context = LocalContext.current
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
+    val bluetoothManager = context.getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager
+    val bluetoothAdapter = bluetoothManager.adapter
+
+    val enableBluetoothLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            viewModel.startScanning()
+        } else {
+            Toast.makeText(context, "Bluetooth is required for scanning", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    fun scanOrAskToEnableBluetooth() {
+        if (bluetoothAdapter?.isEnabled == true) {
+            viewModel.startScanning()
+        } else {
+            enableBluetoothLauncher.launch(Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE))
+        }
+    }
+
     val permissionsToRequest = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
         arrayOf(Manifest.permission.BLUETOOTH_SCAN, Manifest.permission.BLUETOOTH_CONNECT)
     } else {
@@ -75,11 +101,12 @@ fun SearchingScreen(
         )
     }
 
-    val launcher = rememberLauncherForActivityResult(
+    val permissionLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.RequestMultiplePermissions()
     ) { perms ->
-        if (perms.values.all { it }) {
-            viewModel.startScanning()
+        val allGranted = perms.values.all { it }
+        if (allGranted) {
+            scanOrAskToEnableBluetooth()
         } else {
             Toast.makeText(context, "Bluetooth permissions required", Toast.LENGTH_LONG).show()
         }
@@ -89,7 +116,11 @@ fun SearchingScreen(
         val allGranted = permissionsToRequest.all {
             ContextCompat.checkSelfPermission(context, it) == PackageManager.PERMISSION_GRANTED
         }
-        if (allGranted) viewModel.startScanning() else launcher.launch(permissionsToRequest)
+        if (allGranted) {
+            scanOrAskToEnableBluetooth()
+        } else {
+            permissionLauncher.launch(permissionsToRequest)
+        }
     }
 
     SearchingPage(
